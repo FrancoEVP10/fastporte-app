@@ -8,14 +8,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Material App',
+      debugShowCheckedModeBanner: false,
+      title: 'FastPorte',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Material App Bar'),
+          title: const Text('FastPorte App'),
         ),
         body: const Center(
           child: Text('Hello World'),
         ),
+      ),
+      theme: ThemeData.light().copyWith(
+        scaffoldBackgroundColor: Colors.grey[300],
+        appBarTheme: AppBarTheme(
+          elevation: 0,
+          color: Colors.indigo
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Colors.indigo,
+          elevation: 0
+        )
       ),
     );
   }
