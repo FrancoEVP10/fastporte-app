@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class ForgotScreen extends StatelessWidget {
+  const ForgotScreen({super.key});
 
 
   @override
@@ -25,7 +25,7 @@ class LoginScreen extends StatelessWidget {
                   children: [
 
                     SizedBox( height: 10 ),
-                    Text('Welcome, Let\'s get started!', style: Theme.of(context).textTheme.headlineSmall ),
+                    Text('Forgot your Password?', style: Theme.of(context).textTheme.headlineSmall),
                     SizedBox( height: 30 ),
                     
                     ChangeNotifierProvider(
@@ -38,14 +38,6 @@ class LoginScreen extends StatelessWidget {
                 )
               ),
               SizedBox( height: 20 ),
-              TextButton(
-                onPressed: () => Navigator.pushReplacementNamed(context, 'forgotpassword'), 
-                style: ButtonStyle(
-                  overlayColor: MaterialStateProperty.all( Colors.indigo.withOpacity(0.1)),
-                  shape: MaterialStateProperty.all( StadiumBorder() )
-                ),
-                child: Text('Forgot Your Password?', style: TextStyle( fontSize: 18, color: Colors.black87 ),)
-              ),
               TextButton(
                 onPressed: () => Navigator.pushReplacementNamed(context, 'register'), 
                 style: ButtonStyle(
@@ -101,27 +93,6 @@ class _LoginForm extends StatelessWidget {
 
           SizedBox( height: 30 ),
 
-          TextFormField(
-            autocorrect: false,
-            obscureText: true,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecorations.authInputDecoration(
-              hintText: '*****',
-              labelText: 'Password',
-              prefixIcon: Icons.lock_outline
-            ),
-            onChanged: ( value ) => loginForm.password = value,
-            validator: ( value ) {
-
-                return ( value != null && value.length >= 6 ) 
-                  ? null
-                  : 'La contraseña debe de ser de 6 caracteres';                                    
-                
-            },
-          ),
-
-          SizedBox( height: 30 ),
-
           MaterialButton(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             disabledColor: Colors.grey,
@@ -150,11 +121,11 @@ class _LoginForm extends StatelessWidget {
               }
             },
             child: Container(
-              padding: EdgeInsets.symmetric( horizontal: 80, vertical: 15),
+              padding: EdgeInsets.symmetric( horizontal: 70, vertical: 15),
               child: Text(
                 loginForm.isLoading 
                   ? 'Waiting...'
-                  : 'Login',
+                  : 'Continue',
                 style: TextStyle( color: Colors.white ),
               )
             )
