@@ -1,4 +1,4 @@
-import 'package:fastporte_app/screens/auth/login_screen.dart';
+import 'package:fastporte_app/auth/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class StartScreen extends StatelessWidget {
@@ -15,7 +15,7 @@ class StartScreen extends StatelessWidget {
               SizedBox(height: 70),
               Text('FastPorte',style: TextStyle( color: Colors.white, fontSize: 40, fontWeight: FontWeight.w400)),
               SizedBox(height: 30),
-              Image.asset('assets/imgs/splash.png'),
+              Image.asset('assets/imgs/splash.png', width: 300,),
               SizedBox(height: 90),
               MaterialButton(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -28,15 +28,15 @@ class StartScreen extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => LoginScreen()));
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric( horizontal: 70, vertical: 10),
-                  child: Text('Start',style: TextStyle( color: Colors.white, fontSize: 35 ))
+                  padding: EdgeInsets.symmetric( horizontal:40, vertical: 15),
+                  child: Text('Comenzar',style: TextStyle( color: Colors.white, fontSize: 35 ))
                 )
               ),
-              SizedBox(height: 100),
+              SizedBox(height: 50),
               Container(
                   padding: EdgeInsets.symmetric( horizontal: 70, vertical: 4),
                   child: Text(
-                    'By using FastPorte, I agree terms of use and privacy policies privacy',
+                    'Al utilizar FastPorte, acepto las condiciones de uso y las políticas de privacidad',
                     textAlign: TextAlign.center,
                     style: TextStyle( color: Colors.white, fontSize: 17 ))
               ),

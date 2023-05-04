@@ -59,6 +59,7 @@ class AuthService extends ChangeNotifier {
     if ( decodedResp.containsKey('idToken') ) {
         // Token hay que guardarlo en un lugar seguro
         // decodedResp['idToken'];
+        // localid (para el id del back)
         await storage.write(key: 'token', value: decodedResp['idToken']);
         return null;
     } else {

@@ -1,13 +1,13 @@
-import 'package:fastporte_app/providers/login_form_provider.dart';
-import 'package:fastporte_app/services/services.dart';
+import 'package:fastporte_app/auth/providers/login_form_provider.dart';
+import 'package:fastporte_app/auth/services/services.dart';
 import 'package:fastporte_app/ui/input_decorations.dart';
 import 'package:fastporte_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
-class ForgotScreen extends StatelessWidget {
-  const ForgotScreen({super.key});
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
 
   @override
@@ -25,7 +25,7 @@ class ForgotScreen extends StatelessWidget {
                   children: [
 
                     SizedBox( height: 10 ),
-                    Text('Forgot your Password?', style: Theme.of(context).textTheme.headlineSmall),
+                    Text('Inicia Sesión', style: Theme.of(context).textTheme.headlineSmall ),
                     SizedBox( height: 30 ),
                     
                     ChangeNotifierProvider(
@@ -39,12 +39,20 @@ class ForgotScreen extends StatelessWidget {
               ),
               SizedBox( height: 20 ),
               TextButton(
+                onPressed: () => Navigator.pushReplacementNamed(context, 'forgotpassword'), 
+                style: ButtonStyle(
+                  overlayColor: MaterialStateProperty.all( Colors.indigo.withOpacity(0.1)),
+                  shape: MaterialStateProperty.all( StadiumBorder() )
+                ),
+                child: Text('Olvide mi contraseña', style: TextStyle( fontSize: 18, color: Colors.black87 ),)
+              ),
+              TextButton(
                 onPressed: () => Navigator.pushReplacementNamed(context, 'register'), 
                 style: ButtonStyle(
                   overlayColor: MaterialStateProperty.all( Colors.indigo.withOpacity(0.1)),
                   shape: MaterialStateProperty.all( StadiumBorder() )
                 ),
-                child: Text('No Account yet? Create Account', style: TextStyle( fontSize: 18, color: Colors.black87 ),)
+                child: Text('Aún no tienes cuenta? Registrate', style: TextStyle( fontSize: 18, color: Colors.black87 ),)
               ),
               SizedBox( height: 50 ),
             ],
@@ -75,7 +83,7 @@ class _LoginForm extends StatelessWidget {
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecorations.authInputDecoration(
               hintText: 'john.doe@gmail.com',
-              labelText: 'Email address',
+              labelText: 'Correo electrónico',
               prefixIcon: Icons.alternate_email_rounded
             ),
             onChanged: ( value ) => loginForm.email = value,
@@ -88,6 +96,27 @@ class _LoginForm extends StatelessWidget {
                   ? null
                   : 'El valor ingresado no luce como un correo';
 
+            },
+          ),
+
+          SizedBox( height: 30 ),
+
+          TextFormField(
+            autocorrect: false,
+            obscureText: true,
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecorations.authInputDecoration(
+              hintText: '*****',
+              labelText: 'Contraseña',
+              prefixIcon: Icons.lock_outline
+            ),
+            onChanged: ( value ) => loginForm.password = value,
+            validator: ( value ) {
+
+                return ( value != null && value.length >= 6 ) 
+                  ? null
+                  : 'La contraseña debe de ser de 6 caracteres';                                    
+                
             },
           ),
 
@@ -121,11 +150,11 @@ class _LoginForm extends StatelessWidget {
               }
             },
             child: Container(
-              padding: EdgeInsets.symmetric( horizontal: 70, vertical: 15),
+              padding: EdgeInsets.symmetric( horizontal: 60, vertical: 15),
               child: Text(
                 loginForm.isLoading 
-                  ? 'Waiting...'
-                  : 'Continue',
+                  ? 'Esperando...'
+                  : 'Continuar',
                 style: TextStyle( color: Colors.white ),
               )
             )
