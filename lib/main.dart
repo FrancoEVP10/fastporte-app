@@ -1,5 +1,6 @@
-import 'package:fastporte_app/screens/screens.dart';
-import 'package:fastporte_app/services/services.dart';
+import 'package:fastporte_app/auth/screens/screens.dart';
+import 'package:fastporte_app/auth/services/services.dart';
+import 'package:fastporte_app/home/navigationbottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,11 +34,12 @@ class MyApp extends StatelessWidget {
         
         //'checking': ( _ ) => CheckAuthScreen(),
 
-        //'home'    : ( _ ) => HomeScreen(),
+        'home'    : ( _ ) => MainPage(),
         'start'   : ( _ ) => StartScreen(),
         'login'   : ( _ ) => LoginScreen(),
         'register': ( _ ) => RegisterScreen(),
         'forgotpassword': ( _ ) => ForgotScreen(),
+        //'userprofile': ( _ ) => UserProfileScreen(),
       },
       scaffoldMessengerKey: NotificationsService.messengerKey,
       theme: ThemeData.light().copyWith(
