@@ -25,6 +25,7 @@ class User {
         required this.username,
     });
 
+
     factory User.fromJson(String str) => User.fromMap(json.decode(str));
 
     String toJson() => json.encode(toMap());
