@@ -1,9 +1,11 @@
-import 'package:fastporte_app/auth/providers/login_form_provider.dart';
+import 'package:fastporte_app/auth/model/user.dart';
+import 'package:fastporte_app/auth/providers/register_form_provider.dart';
 import 'package:fastporte_app/auth/services/services.dart';
 import 'package:fastporte_app/ui/input_decorations.dart';
 import 'package:fastporte_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 
 
@@ -30,7 +32,7 @@ class RegisterScreen extends StatelessWidget {
                     SizedBox( height: 30 ),
                     
                     ChangeNotifierProvider(
-                      create: ( _ ) => LoginFormProvider(),
+                      create: ( _ ) => RegisterFormProvider(),
                       child: _RegisterForm()
                     )
                     
@@ -58,12 +60,32 @@ class RegisterScreen extends StatelessWidget {
 }
 
 
-class _RegisterForm extends StatelessWidget {
+class _RegisterForm extends StatefulWidget {
+
+  @override
+  State<_RegisterForm> createState() => _RegisterFormState();
+}
+
+class _RegisterFormState extends State<_RegisterForm> {
+  TextEditingController dateController = TextEditingController();
+  List<String> regiones = [
+    'Amazonas', 'Anchas', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Callao','Cusco',
+    'Huancavelica', 'Huanuco', 'Ica', 'Junin', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto',
+    'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno', 'San Martín', ' Tacna', 'Tumbes',
+    'Ucayali'
+  ];
+  String? selectedItem = 'Amazonas';
+
+  @override
+  void initState(){
+    dateController.text = '';
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
 
-    final registerForm = Provider.of<LoginFormProvider>(context);
+    final registerForm = Provider.of<RegisterFormProvider>(context);
 
     return Form(
       key: registerForm.formKey,
@@ -98,7 +120,7 @@ class _RegisterForm extends StatelessWidget {
           TextFormField(
             autocorrect: false,
             obscureText: true,
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.text,
             decoration: InputDecorations.authInputDecoration(
               hintText: '*****',
               labelText: 'Password',
@@ -109,6 +131,135 @@ class _RegisterForm extends StatelessWidget {
                 return ( value != null && value.length >= 6 ) 
                   ? null
                   : 'La contraseña debe de ser de 6 caracteres';                                     
+            },
+          ),
+
+          SizedBox( height: 30 ),
+
+          TextFormField(
+            autocorrect: false,
+            keyboardType: TextInputType.text,
+            decoration: InputDecorations.authInputDecoration(
+              hintText: 'John',
+              labelText: 'Nombre',
+              prefixIcon: Icons.person
+            ),
+            onChanged: ( value ) => registerForm.name = value,
+            validator: ( value ) {
+
+                return ( value != null ) 
+                  ? null
+                  : 'Este campo es requerido';
+
+            },
+          ),
+
+          SizedBox( height: 30 ),
+
+          TextFormField(
+            autocorrect: false,
+            keyboardType: TextInputType.text,
+            decoration: InputDecorations.authInputDecoration(
+              hintText: 'Doe',
+              labelText: 'Apellido',
+              prefixIcon: Icons.person
+            ),
+            onChanged: ( value ) => registerForm.lastname = value,
+            validator: ( value ) {
+
+                return ( value != null ) 
+                  ? null
+                  : 'Este campo es requerido';
+
+            },
+          ),
+
+          SizedBox( height: 30 ),
+
+          TextFormField(
+            autocorrect: false,
+            keyboardType: TextInputType.text,
+            decoration: InputDecorations.authInputDecoration(
+              hintText: 'johndoe10',
+              labelText: 'Nombre de Usuario',
+              prefixIcon: Icons.person
+            ),
+            onChanged: ( value ) => registerForm.username = value,
+            validator: ( value ) {
+
+                return ( value != null ) 
+                  ? null
+                  : 'Este campo es requerido';
+
+            },
+          ),
+
+          SizedBox( height: 30 ),
+
+          TextFormField(
+            autocorrect: false,
+            keyboardType: TextInputType.text,
+            decoration: InputDecorations.authInputDecoration(
+              hintText: '987654321',
+              labelText: 'Número de celular',
+              prefixIcon: Icons.phone
+            ),
+            onChanged: ( value ) => registerForm.phone = value,
+            validator: ( value ) {
+                if ( value == null ) {
+                  return 'Este campo es obligatorio';
+                }else if (value.length != 9){
+                  return 'Ingrese un número válido';
+                }else {
+                  return null;
+                }
+            },
+          ),
+
+          SizedBox( height: 30 ),
+
+          TextFormField(
+            controller: dateController,
+            decoration: InputDecorations.authInputDecoration(
+              hintText: '10/01/2000',
+              labelText: "Fecha de nacimiento",
+              prefixIcon: Icons.calendar_month,
+            ),
+            onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                       initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2101)
+                  );
+                  
+                  if(pickedDate != null ){
+                      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+
+                      setState(() {
+                         dateController.text = formattedDate;  
+                      });
+                  }
+            },
+            onChanged: (value) => registerForm.birthdate = value as DateTime,
+          ),
+
+          SizedBox( height: 30 ),
+
+          DropdownButtonFormField<String>(
+            decoration: InputDecorations.authInputDecoration(
+              hintText: 'Selecciona tu región', 
+              labelText: 'Región',
+              prefixIcon: Icons.location_on,
+            ),
+            value: selectedItem,
+            items: regiones.map((item) => DropdownMenuItem<String>(
+              value: item,
+              child: Text(item, style: TextStyle(fontSize: 20),)
+              )).toList(), 
+            onChanged: (item) {
+              setState(() => selectedItem = item);
+              registerForm.region = selectedItem!;
             },
           ),
 
@@ -128,9 +279,10 @@ class _RegisterForm extends StatelessWidget {
 
               registerForm.isLoading = true;
 
-              final String? errorMessage = await authService.createUser(registerForm.email, registerForm.password);
-
+              final String? errorMessage = await authService.createUserFirebase(registerForm.email, registerForm.password);
+              final String id =  authService.localId;
               if ( errorMessage == null ) {
+                await authService.createUserBackend(User(birthdate: registerForm.birthdate, description: '', email: registerForm.email, id: id, lastname: registerForm.lastname, name: registerForm.name, phone: registerForm.phone, photo: '', region: registerForm.region, username: registerForm.username));
                 // ignore: use_build_context_synchronously
                 Navigator.pushReplacementNamed(context, 'home');
               } else {
