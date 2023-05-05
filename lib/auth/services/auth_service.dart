@@ -57,6 +57,24 @@ class AuthService extends ChangeNotifier {
     return user.id;
   }
 
+  Future<String> createUserDriverBackend(User user) async {
+    final url = Uri.http(_baseUrlBack, '/api/drivers');
+    //final url = Uri.https(_baseUrlBack, '/api/clients');
+    final token = await storage.read(key: 'token');
+    final resp = await http.post(
+      url,
+      body: user.toJson(),
+      headers: {
+        'content-type' : 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+    // ignore: unused_local_variable
+    final decodedData = json.decode(resp.body);
+
+    return user.id;
+  }
+
   Future<String?> login(String email, String password) async {
     final Map<String, dynamic> authData = {
       'email': email,
