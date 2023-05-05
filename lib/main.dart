@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
         //'checking': ( _ ) => CheckAuthScreen(),
 
         'home'    : ( _ ) => MainPage(),
+        'select'  : ( _ ) => SelectRoleScreen(),
         'start'   : ( _ ) => StartScreen(),
         'login'   : ( _ ) => LoginScreen(),
         'register': ( _ ) => RegisterScreen(),
