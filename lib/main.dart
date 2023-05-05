@@ -38,7 +38,6 @@ class MyApp extends StatelessWidget {
         'start'   : ( _ ) => StartScreen(),
         'login'   : ( _ ) => LoginScreen(),
         'register': ( _ ) => RegisterScreen(),
-        'forgotpassword': ( _ ) => ForgotScreen(),
         //'userprofile': ( _ ) => UserProfileScreen(),
       },
       scaffoldMessengerKey: NotificationsService.messengerKey,
