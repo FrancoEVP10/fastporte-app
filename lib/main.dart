@@ -1,5 +1,6 @@
 import 'package:fastporte_app/auth/screens/screens.dart';
 import 'package:fastporte_app/auth/services/services.dart';
+import 'package:fastporte_app/auth/services/user_service.dart';
 import 'package:fastporte_app/home/navigationbottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ class AppState extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: ( _ ) => AuthService() ),
+        ChangeNotifierProvider(create: ( _ ) => UserService() ),
       ],
       child: MyApp(),
     );
