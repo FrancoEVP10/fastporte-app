@@ -22,7 +22,7 @@ class StartScreen extends StatelessWidget {
                 elevation: 0,
                 color: Color.fromRGBO(26, 204, 141, 1),
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, 'login');
+                  Navigator.pushReplacementNamed(context, 'select');
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric( horizontal:40, vertical: 15),
