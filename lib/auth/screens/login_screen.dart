@@ -39,14 +39,6 @@ class LoginScreen extends StatelessWidget {
               ),
               SizedBox( height: 20 ),
               TextButton(
-                onPressed: () => Navigator.pushReplacementNamed(context, 'forgotpassword'), 
-                style: ButtonStyle(
-                  overlayColor: MaterialStateProperty.all( Colors.indigo.withOpacity(0.1)),
-                  shape: MaterialStateProperty.all( StadiumBorder() )
-                ),
-                child: Text('Olvide mi contraseña', style: TextStyle( fontSize: 18, color: Colors.black87 ),)
-              ),
-              TextButton(
                 onPressed: () => Navigator.pushReplacementNamed(context, 'register'), 
                 style: ButtonStyle(
                   overlayColor: MaterialStateProperty.all( Colors.indigo.withOpacity(0.1)),

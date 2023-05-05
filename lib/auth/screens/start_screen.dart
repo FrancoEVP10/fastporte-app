@@ -1,4 +1,3 @@
-import 'package:fastporte_app/auth/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class StartScreen extends StatelessWidget {
@@ -23,9 +22,7 @@ class StartScreen extends StatelessWidget {
                 elevation: 0,
                 color: Color.fromRGBO(26, 204, 141, 1),
                 onPressed: () {
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (context) => LoginScreen()));
+                  Navigator.pushReplacementNamed(context, 'login');
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric( horizontal:40, vertical: 15),
