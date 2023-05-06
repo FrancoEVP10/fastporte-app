@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:fastporte_app/globals.dart' as globals;
 //import 'package:fastporte_app/auth/model/user.dart';
 import 'package:fastporte_app/auth/model/user.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,6 @@ class AuthService extends ChangeNotifier {
   final String _baseUrlBack = 'localhost:8080';
   final String _baseUrl = 'identitytoolkit.googleapis.com';
   final String _firebaseToken = 'AIzaSyDnWZsX3Fv1M9cUw6QeR1D337mZl5FNjlI';
-  String localId = '';
 
   final storage = FlutterSecureStorage();
 
@@ -28,7 +27,7 @@ class AuthService extends ChangeNotifier {
 
     final resp = await http.post(url, body: json.encode(authData));
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-    localId = decodedResp['localId'];
+    globals.localId = decodedResp['localId'];
     if (decodedResp.containsKey('idToken')) {
       // Token hay que guardarlo en un lugar seguro
       await storage.write(key: 'token', value: decodedResp['idToken']);
@@ -92,6 +91,7 @@ class AuthService extends ChangeNotifier {
       // Token hay que guardarlo en un lugar seguro
       // decodedResp['idToken'];
       // localid (para el id del back)
+      globals.localId = decodedResp['localId'];
       await storage.write(key: 'token', value: decodedResp['idToken']);
       return null;
     } else {
@@ -107,6 +107,4 @@ class AuthService extends ChangeNotifier {
   Future<String> readToken() async {
     return await storage.read(key: 'token') ?? '';
   }
-
-  String get id => localId;
 }

@@ -262,7 +262,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                       final String? errorMessage =
                           await authService.createUserFirebase(
                               registerForm.email, registerForm.password);
-                      final String id = authService.localId;
+                      final String id = globals.localId;
                       if (errorMessage == null) {
                         if (globals.role == 'cliente') {
                           await authService.createUserBackend(User(

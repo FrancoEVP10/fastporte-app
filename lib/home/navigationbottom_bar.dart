@@ -19,6 +19,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       drawer: NavBar(),
       appBar: AppBar(
