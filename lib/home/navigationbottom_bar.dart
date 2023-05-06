@@ -1,4 +1,5 @@
 import 'package:fastporte_app/home/home_screen.dart';
+import 'package:fastporte_app/static/support_screen.dart';
 import 'package:fastporte_app/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +41,7 @@ class _MainPageState extends State<MainPage> {
           HomeScreen(),
           Container(color: Colors.red,),
           Container(color: Colors.blue,),
-          Container(color: Colors.black,),
+          SupportScreen(),
         ],
       ),
       bottomNavigationBar: BounceTapBar(
@@ -225,7 +226,7 @@ class _CircleItemPainter extends CustomPainter {
   void paint(Canvas canvas, Size size){
     final center = Offset(size.width / 2, size.height / 2);
     final radius = 20.0 * progress;
-    final strokeWidth = 10.0;
+    const strokeWidth = 10.0;
     final currentStrokeWidth = strokeWidth * (1 - progress);
     if(progress < 1.0){
       canvas.drawCircle(center, radius, Paint()
