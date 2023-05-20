@@ -42,7 +42,7 @@ class SelectRoleScreen extends StatelessWidget {
                     color: Color.fromRGBO(26, 204, 141, 1),
                     onPressed: () {
                       globals.role = 'cliente';
-                      Navigator.pushNamed(context, 'login');
+                      Navigator.pushReplacementNamed(context, 'login');
                     },
                     child: Container(
                         padding:

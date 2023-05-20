@@ -71,6 +71,7 @@ flutter:
     - assets/imgs/splash.png
     - assets/imgs/user-vector.png
     - assets/imgs/fondo.jpg
+    - assets/imgs/fondo-perfil.jpg
     - assets/imgs/facebook-logo.png
     - assets/imgs/instagram-logo.png
     - assets/imgs/whatsapp-logo.png
