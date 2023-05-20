@@ -26,12 +26,6 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('FastPorte'),
-        actions: [
-          IconButton(
-            onPressed: () {}, 
-            icon: Icon(Icons.account_circle_rounded),
-          )
-        ],
       ),
       extendBody: true,
       body: IndexedStack(
@@ -83,8 +77,6 @@ class BounceTapBar extends StatefulWidget {
 
 class _BounceTapBarState extends State<BounceTapBar> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation _animTabBarIn;
-  late Animation _animTabBarOut;
   late Animation _animCircleItem;
   late Animation _animElevationIn;
   late Animation _animElevationOut;
@@ -101,21 +93,6 @@ class _BounceTapBarState extends State<BounceTapBar> with SingleTickerProviderSt
         milliseconds: 1200
       )
     );
-    _animTabBarIn = CurveTween(
-      curve: Interval(
-        0.1,
-        0.6,
-        curve: Curves.decelerate,
-      ),
-    ).animate(_controller);
-
-    _animTabBarOut = CurveTween(
-      curve: Interval(
-        0.6,
-        1.0,
-        curve: Curves.bounceOut,
-      ),
-    ).animate(_controller);
 
     _animCircleItem = CurveTween(
       curve: Interval(
@@ -161,7 +138,7 @@ class _BounceTapBarState extends State<BounceTapBar> with SingleTickerProviderSt
         animation: _controller,
         builder: (context, _){
 
-          currentWidth = width - (movement * _animTabBarIn.value) + (movement * _animTabBarOut.value);
+          currentWidth = width;
           currentElevation = -movement * _animElevationIn.value + (movement - 56.0/4) * _animElevationOut.value;
 
           return Center(

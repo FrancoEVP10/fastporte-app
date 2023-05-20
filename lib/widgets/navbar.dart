@@ -22,6 +22,7 @@ class NavBar extends StatelessWidget {
               final name = user.name;
               final lastname = user.lastname;
               final email = user.email;
+              final photo = user.photo;
 
               return Drawer(
                 child: ListView(
@@ -31,8 +32,7 @@ class NavBar extends StatelessWidget {
                       accountName: Text('$name $lastname'),
                       accountEmail: Text(email),
                       currentAccountPicture: CircleAvatar(
-                        child: ClipOval(
-                            child: Image.asset('assets/imgs/user-vector.png')),
+                        child: _buildChild(photo),
                       ),
                       decoration: BoxDecoration(
                         color: Color.fromRGBO(15, 21, 163, 1),
@@ -41,10 +41,12 @@ class NavBar extends StatelessWidget {
                     ListTile(
                         leading: Icon(Icons.person_outline_outlined, size: 30),
                         title: Text(
-                          'Account',
+                          'Perfil de usuario',
                           style: TextStyle(fontSize: 20),
                         ),
-                        onTap: () {}),
+                        onTap: () {
+                          Navigator.pushReplacementNamed(context, 'profile');
+                        }),
                     ListTile(
                       leading: Icon(Icons.logout, size: 30),
                       title: Text(
@@ -60,12 +62,37 @@ class NavBar extends StatelessWidget {
                   ],
                 ),
               );
-            }else {
+            } else {
               return Text('No se pudo obtener la información');
             }
-          }else{
-            return CircularProgressIndicator();
+          } else {
+            return SizedBox(
+              height: MediaQuery.of(context).size.height / 1.3,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
           }
         });
+  }
+}
+
+Widget _buildChild(String photo) {
+  if (photo == '') {
+    return ClipOval(child: Image.asset('assets/imgs/user-vector.png'));
+  } else {
+    return Container(
+      width: 75,
+      height: 75,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          image:
+              DecorationImage(image: NetworkImage(photo), fit: BoxFit.contain),
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Color.fromRGBO(26, 204, 141, 1),
+            width: 4,
+          )),
+    );
   }
 }

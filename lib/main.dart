@@ -1,3 +1,4 @@
+import 'package:fastporte_app/auth/screens/edit_profile_screen.dart';
 import 'package:fastporte_app/auth/screens/screens.dart';
 import 'package:fastporte_app/auth/services/services.dart';
 import 'package:fastporte_app/auth/services/user_service.dart';
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
         'login'   : ( _ ) => LoginScreen(),
         'register': ( _ ) => RegisterScreen(),
         'support' : ( _ ) => SupportScreen(),
-        //'userprofile': ( _ ) => UserProfileScreen(),
+        'profile': ( _ ) => UserProfileScreen(),
+        'editprofile':( _ ) => EditProfileScreen(), 
       },
       scaffoldMessengerKey: NotificationsService.messengerKey,
       theme: ThemeData.light().copyWith(
