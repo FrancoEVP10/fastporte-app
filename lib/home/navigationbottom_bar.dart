@@ -1,3 +1,4 @@
+import 'package:fastporte_app/contracts/user_contracts_screen.dart';
 import 'package:fastporte_app/home/home_screen.dart';
 import 'package:fastporte_app/static/support_screen.dart';
 import 'package:fastporte_app/widgets/navbar.dart';
@@ -34,7 +35,7 @@ class _MainPageState extends State<MainPage> {
           //Aqui se pondrian los screens
           HomeScreen(),
           Container(color: Colors.red,),
-          Container(color: Colors.blue,),
+          UserContractsScreen(),
           SupportScreen(),
         ],
       ),
