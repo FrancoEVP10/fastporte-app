@@ -4,14 +4,14 @@ import 'package:fastporte_app/globals.dart' as globals;
 import 'package:fastporte_app/auth/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
+import 'user_service.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService extends ChangeNotifier {
   final String _baseUrlBack = 'localhost:8080';
   final String _baseUrl = 'identitytoolkit.googleapis.com';
   final String _firebaseToken = 'AIzaSyDnWZsX3Fv1M9cUw6QeR1D337mZl5FNjlI';
-
+  final userService = UserService();
   final storage = FlutterSecureStorage();
 
   // Si retornamos algo, es un error, si no, todo bien!
@@ -92,6 +92,12 @@ class AuthService extends ChangeNotifier {
       // decodedResp['idToken'];
       // localid (para el id del back)
       globals.localId = decodedResp['localId'];
+      try {
+        await getUserById(globals.localId, decodedResp['idToken']);
+      } catch(e){
+        return 'Usuario no encontrado';
+      }
+
       await storage.write(key: 'token', value: decodedResp['idToken']);
       return null;
     } else {
@@ -106,5 +112,33 @@ class AuthService extends ChangeNotifier {
 
   Future<String> readToken() async {
     return await storage.read(key: 'token') ?? '';
+  }
+
+    Future<User> getUserById(String userId, String? token) async {
+    final Uri url;
+
+    if (globals.role == 'transportista') {
+      url = Uri.http(_baseUrlBack, '/api/drivers/$userId');
+    } else {
+      url = Uri.http(_baseUrlBack, '/api/clients/$userId');
+    }
+
+    
+    final resp = await http.get(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (resp.statusCode == 200) {
+      final userJson = jsonDecode(utf8.decode(resp.bodyBytes));
+      final user = User.fromMap(userJson);
+
+      return user;
+    } else {
+      throw Exception('Error al obtener el usuario ${resp.statusCode}');
+    }
   }
 }
