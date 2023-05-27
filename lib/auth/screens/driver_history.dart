@@ -100,19 +100,131 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  Widget doneInfo() {
-    return Container(
-      child: Text('Done'),
-    );
-  }
 
-  Widget currentInfo() {
-    return Container(
-      child: Text('Current'),
-    );
-  }
 
   Widget waitingInfo() {
+  final List<Contract> apiData = [
+    createFakeContract(),
+    createFakeContract()
+  ];
+
+  return Expanded(
+    child: ListView.builder(
+      itemCount: apiData.length,
+      itemBuilder: (BuildContext context, int index) {
+        final item = apiData[index];
+        return Container(
+          height: 200,
+          margin: EdgeInsets.all(10),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.white,
+              boxShadow: const [
+                BoxShadow(
+                  color: Color.fromARGB(73, 63, 62, 62),
+                  blurRadius: 10,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            padding: EdgeInsets.fromLTRB(20, 20, 20, 3),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Subject: ${item.subject}",
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Container(
+                  //margin: EdgeInsets.symmetric(vertical: 10),
+                  child: Divider(
+                    color: Colors.grey,
+                    thickness: 1.0,
+                  ),
+                ),
+                Text(
+                  "From: ${item.from}",
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 11),
+                Text(
+                  "To: ${item.to}",
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 11),
+                Text(
+                  "Price: S/.${item.amount}",
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        print("a");
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                      ),
+                      child: Text(
+                        'Decline',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        print("a");
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF1ACC8D),
+                      ),
+                      child: Text(
+                        'Accept',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 125),
+                    CircleAvatar(
+                      radius: 20,
+                      backgroundImage: NetworkImage(item.client.photo),
+                      backgroundColor: Colors.grey,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ),
+  );
+
+
+}
+
+
+
+  Widget doneInfo() {
     final List<Contract> apiData = [
       createFakeContract(),
       createFakeContract()
@@ -127,115 +239,195 @@ class _HistoryScreenState extends State<HistoryScreen> {
             height: 200,
             margin: EdgeInsets.all(10),
             child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                          color: Color.fromARGB(73, 63, 62, 62),
-                          blurRadius: 10,
-                          offset: Offset(0, 3))
-                    ]),
-                padding: EdgeInsets.all(10),
-                child: Row(children: [
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color.fromARGB(73, 63, 62, 62),
+                    blurRadius: 10,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              padding: EdgeInsets.fromLTRB(20, 20, 20, 3),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Subject: ${item.subject}",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(15, 10, 0, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Subject: ${item.subject}",
-                          style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
+                    //margin: EdgeInsets.symmetric(vertical: 10),
+                    child: Divider(
+                      color: Colors.grey,
+                      thickness: 1.0,
+                    ),
+                  ),
+                  Text(
+                    "From: ${item.from}",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+
+                  Text(
+                    "Time: ${item.timeDeparture} - ${item.timeArrival}",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                    ),
+                  ),
+                 
+                  SizedBox(height: 10),
+                  Text(
+                    "To: ${item.to}",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                    ),
+                  ),
+                  
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Price: S/.${item.amount}",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500, // Add this line
                         ),
-                        SizedBox(
-                          height: 13,
-                        ),
-                        Text(
-                          "From: ${item.from}",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 13,
-                        ),
-                        Text(
-                          "To: ${item.to}",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 13,
-                        ),
-                        Text(
-                          "Price: S/.${item.amount}",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                print("a");
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
-                              ),
-                              child: Text(
-                                'Decline',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                print("a");
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xFF1ACC8D),
-                              ),
-                              child: Text(
-                                'Accept',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 110,
-                            ),
-                            CircleAvatar(radius: 20, backgroundImage: NetworkImage(item.client.photo), backgroundColor: Colors.grey,)
-                            
-                          ],
-                        )
-                      
-                      ]
-                    )
-                  )
-                ]
-              )
+                      ),
+                      SizedBox(width: 195),
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundImage: NetworkImage(item.client.photo),
+                        backgroundColor: Colors.grey,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
         },
       ),
     );
+
+    
   }
+
+  Widget currentInfo() {
+    final List<Contract> apiData = [
+      createFakeContract(),
+      createFakeContract()
+    ];
+
+    return Expanded(
+      child: ListView.builder(
+        itemCount: apiData.length,
+        itemBuilder: (BuildContext context, int index) {
+          final item = apiData[index];
+          return Container(
+            height: 200,
+            margin: EdgeInsets.all(10),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color.fromARGB(73, 63, 62, 62),
+                    blurRadius: 10,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              padding: EdgeInsets.fromLTRB(20, 20, 20, 3),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Subject: ${item.subject}",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Container(
+                    //margin: EdgeInsets.symmetric(vertical: 10),
+                    child: Divider(
+                      color: Colors.grey,
+                      thickness: 1.0,
+                    ),
+                  ),
+                  Text(
+                    "From: ${item.from}",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+
+                  Text(
+                    "Time Start: ${item.timeDeparture}",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                    ),
+                  ),
+                 
+                  SizedBox(height: 10),
+                  Text(
+                    "To: ${item.to}",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                    ),
+                  ),
+                  
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Price: S/.${item.amount}",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500, // Add this line
+                        ),
+                      ),
+                      SizedBox(width: 195),
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundImage: NetworkImage(item.client.photo),
+                        backgroundColor: Colors.grey,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+
+    
+  }
+
 }
 
 class MyData {
