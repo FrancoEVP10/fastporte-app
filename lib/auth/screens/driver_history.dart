@@ -1,3 +1,4 @@
+import 'package:fastporte_app/auth/model/contract.dart';
 import 'package:flutter/material.dart';
 
 enum ButtonType {
@@ -112,12 +113,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Widget waitingInfo() {
-    final List<MyData> apiData = [
-      MyData('Item 1 Title', 'Item 1 Description'),
-      MyData('Item 2 Title', 'Item 2 Description'),
-      MyData('Item 3 Title', 'Item 3 Description'),
-      MyData('Item 4 Title', 'Item 4 Description'),
-      MyData('Item 5 Title', 'Item 5 Description'),
+    final List<Contract> apiData = [
+      createFakeContract(),
+      createFakeContract()
     ];
 
     return Expanded(
@@ -146,7 +144,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Subject: ${item.title}",
+                          "Subject: ${item.subject}",
                           style: TextStyle(
                               fontSize: 15,
                               color: Colors.black,
@@ -156,7 +154,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           height: 13,
                         ),
                         Text(
-                          "From: Avenida Larco 601, Lima, Miraflores - 15072",
+                          "From: ${item.from}",
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.black,
@@ -166,7 +164,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           height: 13,
                         ),
                         Text(
-                          "To: Ciudad de Caral, Lomas de Lachay",
+                          "To: ${item.to}",
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.black,
@@ -176,7 +174,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           height: 13,
                         ),
                         Text(
-                          "Price: S/. 1560",
+                          "Price: S/.${item.amount}",
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.black,
@@ -222,13 +220,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             SizedBox(
                               width: 110,
                             ),
-
-                            Image.asset(
-                              'assets/imgs/user-vector.png',
-                              // Provide the path to your image asset
-                              fit: BoxFit.cover,
-                              width: 45,
-                            ),
+                            CircleAvatar(radius: 20, backgroundImage: NetworkImage(item.client.photo), backgroundColor: Colors.grey,)
+                            
                           ],
                         )
                       

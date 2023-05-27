@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:faker/faker.dart';
+
 class User {
   DateTime birthdate;
   String description;
@@ -67,4 +69,22 @@ class User {
       photo: photo,
       region: region,
       username: username);
+}
+
+
+User createFakeUser() {
+  final faker = Faker();
+  
+  return User(
+    birthdate: faker.date.dateTime(minYear: 1950, maxYear: 2003),
+    description: faker.lorem.sentence(),
+    email: faker.internet.email(),
+    id: faker.guid.guid(),
+    lastname: faker.person.lastName(),
+    name: faker.person.firstName(),
+    phone: faker.phoneNumber.toString(),
+    photo: "https://thumbs.dreamstime.com/z/cara-sonriente-de-la-persona-diversa-108427785.jpg",
+    region: faker.address.city(),
+    username: faker.person.name(),
+  );
 }
