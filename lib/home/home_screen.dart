@@ -2,13 +2,15 @@ import 'package:fastporte_app/auth/services/user_service.dart';
 import 'package:fastporte_app/widgets/user_card_information.dart';
 import 'package:fastporte_app/globals.dart' as globals;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
-  final userService = UserService();
-  HomeScreen({super.key});
+  //final userService = UserService();
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final userService = Provider.of<UserService>(context);
     final userFuture = userService.getUserById(globals.localId);
     return FutureBuilder(
         future: userFuture,
@@ -18,6 +20,7 @@ class HomeScreen extends StatelessWidget {
               final user = snapshot.data!;
               final name = user.name;
               final image = user.photo;
+              userService.selectedUser = user.copy();
 
               return Scaffold(
                 body: SafeArea(

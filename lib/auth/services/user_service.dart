@@ -8,16 +8,19 @@ import 'package:http/http.dart' as http;
 class UserService extends ChangeNotifier {
   final String _baseUrlBack = 'localhost:8080';
   final storage = FlutterSecureStorage();
+  late User selectedUser;
 
-  Future<User> getUserById (String userId) async {
+  bool isSaving = false;
+
+  Future<User> getUserById(String userId) async {
     final Uri url;
 
-    if (globals.role == 'transportista'){
+    if (globals.role == 'transportista') {
       url = Uri.http(_baseUrlBack, '/api/drivers/$userId');
-    }else {
+    } else {
       url = Uri.http(_baseUrlBack, '/api/clients/$userId');
     }
-    
+
     final token = await storage.read(key: 'token');
     final resp = await http.get(
       url,
@@ -27,13 +30,37 @@ class UserService extends ChangeNotifier {
       },
     );
 
-    if (resp.statusCode == 200){
-      final userJson = json.decode(resp.body);
+    if (resp.statusCode == 200) {
+      final userJson = jsonDecode(utf8.decode(resp.bodyBytes));
       final user = User.fromMap(userJson);
 
       return user;
-    }else{
+    } else {
+      throw Exception('Error al obtener el usuario ${resp.statusCode}');
+    }
+  }
+
+  Future<String> updateUser(User user) async {
+    final Uri url;
+    if (globals.role == 'transportista') {
+      url = Uri.http(_baseUrlBack, '/api/drivers/${user.id}');
+    } else {
+      url = Uri.http(_baseUrlBack, '/api/clients/${user.id}');
+    }
+    final token = await storage.read(key: 'token');
+    final resp = await http.put(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+      body: user.toJson(),
+    );
+    if (resp.statusCode == 200) {
+      return user.id;
+    } else {
       throw Exception('Error al obtener el usuario');
     }
   }
+
 }
