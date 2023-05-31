@@ -1,4 +1,4 @@
-import 'package:fastporte_app/auth/screens/driver_history.dart';
+import 'package:fastporte_app/contracts/screens/screens.dart';
 import 'package:fastporte_app/auth/screens/edit_profile_screen.dart';
 import 'package:fastporte_app/auth/screens/screens.dart';
 import 'package:fastporte_app/auth/services/services.dart';
@@ -47,9 +47,9 @@ class MyApp extends StatelessWidget {
         'register': ( _ ) => RegisterScreen(),
         'support' : ( _ ) => SupportScreen(),
         'profile': ( _ ) => UserProfileScreen(),
-        'editprofile':( _ ) => EditProfileScreen(), 
-        'history':( _ ) => HistoryScreen(), 
-
+        'editprofile': ( _ ) => EditProfileScreen(), 
+        'history': ( _ ) => HistoryScreen(), 
+        'usercontracts': ( _ ) => UserContractsScreen(),
       },
       scaffoldMessengerKey: NotificationsService.messengerKey,
       theme: ThemeData.light().copyWith(

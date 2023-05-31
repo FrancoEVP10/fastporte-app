@@ -1,8 +1,8 @@
-import 'package:fastporte_app/widgets/summary_row.dart';
 import 'package:flutter/material.dart';
 
 import 'amount_row.dart';
 import 'details_row.dart';
+import 'summary_row.dart';
 
 class ContractCard extends StatelessWidget {
   const ContractCard({

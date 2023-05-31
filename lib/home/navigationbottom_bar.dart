@@ -1,8 +1,9 @@
-import 'package:fastporte_app/contracts/user_contracts_screen.dart';
+import 'package:fastporte_app/contracts/screens/screens.dart';
 import 'package:fastporte_app/home/home_screen.dart';
 import 'package:fastporte_app/static/support_screen.dart';
 import 'package:fastporte_app/widgets/navbar.dart';
 import 'package:flutter/material.dart';
+import 'package:fastporte_app/globals.dart' as globals;
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -35,7 +36,10 @@ class _MainPageState extends State<MainPage> {
           //Aqui se pondrian los screens
           HomeScreen(),
           Container(color: Colors.red,),
-          UserContractsScreen(),
+          if (globals.role == 'cliente')
+            UserContractsScreen(),
+          if (globals.role == 'transportista')
+            HistoryScreen(),
           SupportScreen(),
         ],
       ),

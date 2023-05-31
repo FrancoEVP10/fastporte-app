@@ -1,5 +1,5 @@
+import 'package:fastporte_app/contracts/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import '../widgets/widgets.dart';
 
 class UserContractsScreen extends StatefulWidget {
   const UserContractsScreen({Key? key}) : super(key: key);
