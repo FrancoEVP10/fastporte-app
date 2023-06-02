@@ -47,7 +47,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   'Search Vehicle',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -116,25 +116,29 @@ class _SearchScreenState extends State<SearchScreen> {
                   color: Colors.blue[100],
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: DropdownButton<String>(
-                  value: selectedDocumentacion,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedDocumentacion = newValue!;
-                    });
-                  },
-                  items: <String>['si', 'no']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(value),
-                      ),
-                    );
-                  }).toList(),
-                  underline: Container(),
+                child: Container(
+                  width:
+                      150, // Establecer el ancho deseado para el desplegable de opciones
+                  child: DropdownButton<String>(
+                    value: selectedDocumentacion,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedDocumentacion = newValue!;
+                      });
+                    },
+                    items: <String>['si', 'no']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(value),
+                        ),
+                      );
+                    }).toList(),
+                    underline: Container(),
+                  ),
                 ),
               ),
             ),
@@ -166,8 +170,7 @@ class _SearchScreenState extends State<SearchScreen> {
               itemBuilder: (context, index) {
                 final result = results[index];
                 return Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 28),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(8),
@@ -182,24 +185,33 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      leading: Image.network(result['image']),
-                      title: Text(result['nombre']),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4.0),
-                            child:
-                                Text('Calificación: ${result['calificacion']}'),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListTile(
+                          leading: Image.network(result['image']),
+                          title: Text(result['nombre']),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 4.0),
+                                child: Text(
+                                    'Calificación: ${result['calificacion']}'),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 4.0),
+                                child: Text(
+                                    'Descripción: ${result['descripcion']}'),
+                              ),
+                            ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4.0),
-                            child:
-                                Text('Descripción: ${result['descripcion']}'),
-                          ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                            height: 8), // Aumentar el espacio vertical aquí
+                      ],
                     ),
                   ),
                 );
