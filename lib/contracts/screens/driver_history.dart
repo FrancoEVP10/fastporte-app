@@ -1,11 +1,10 @@
-import 'package:fastporte_app/auth/model/contract.dart';
-import 'package:fastporte_app/auth/services/contract_service.dart';
+import 'package:fastporte_app/contracts/services/contract_service.dart';
 import 'package:flutter/material.dart';
 
 enum ButtonType {
-  Done,
-  Current,
-  Waiting,
+  done,
+  current,
+  waiting,
 }
 
 class HistoryScreen extends StatefulWidget {
@@ -14,19 +13,20 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  ButtonType selectedButton = ButtonType.Done;
+  ButtonType selectedButton = ButtonType.done;
 
   Color _buttonColor1 = Color(0xFF1ACC8D);
   Color _buttonColor2 = Color(0xFFD3D3D3);
   Color _buttonColor3 = Color(0xFFD3D3D3);
 
   Widget getInfoWidget(data) {
+    data ??= [];
     switch (selectedButton) {
-      case ButtonType.Done:
+      case ButtonType.done:
         return doneInfo(data);
-      case ButtonType.Current:
+      case ButtonType.current:
         return currentInfo(data);
-      case ButtonType.Waiting:
+      case ButtonType.waiting:
         return waitingInfo(data);
       default:
         return Container();
@@ -35,13 +35,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final contractsFuture = ContractService.getContracts();
-    print(contractsFuture);
+    final contractsService = ContractService();
+    final contractsFuture = contractsService.getContracts();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('History'),
-      ),
       body: Column(
         children: [
           Row(
@@ -50,7 +47,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    selectedButton = ButtonType.Done;
+                    selectedButton = ButtonType.done;
                     _buttonColor1 =
                         Color(0xFF1ACC8D); // Change the button color
                     _buttonColor2 =
@@ -66,7 +63,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    selectedButton = ButtonType.Current;
+                    selectedButton = ButtonType.current;
                     _buttonColor1 =
                         Color(0xFFD3D3D3); // Change the button color
                     _buttonColor2 =
@@ -82,7 +79,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    selectedButton = ButtonType.Waiting;
+                    selectedButton = ButtonType.waiting;
                     _buttonColor1 =
                         Color(0xFFD3D3D3); // Change the button color
                     _buttonColor2 =
@@ -100,8 +97,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ),
           FutureBuilder(
               future: contractsFuture,
-              builder: (context, AsyncSnapshot<List> snapshot) {
-                return getInfoWidget(snapshot.data!);
+              builder: (context, AsyncSnapshot<List>? snapshot) {
+                return getInfoWidget(snapshot?.data);
               })
         ],
       ),

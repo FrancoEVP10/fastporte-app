@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:fastporte_app/auth/model/contract.dart';
+import 'package:fastporte_app/contracts/model/contract.dart';
 import 'package:fastporte_app/globals.dart' as globals;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -7,15 +7,16 @@ import 'package:http/http.dart' as http;
 
 class ContractService extends ChangeNotifier {
   //static String _baseUrlBack = 'localhost:8080';
+  final String _baseUrlBack = 'localhost:8080';
   late Contract contract;
 
   bool isSaving = false;
-
-  static Future<List<dynamic>> getContracts() async {
-      var storage = FlutterSecureStorage();
+  final storage = FlutterSecureStorage();
+  Future<List<dynamic>> getContracts() async {
+    
     print("aqui");
     final Uri url;
-    const String _baseUrlBack = 'localhost:8080';
+    
 
     if (globals.role == 'transportista') {
       url = Uri.http(_baseUrlBack, '/api/contracts');
