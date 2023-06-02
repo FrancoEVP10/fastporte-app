@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'FastPorte',
-      initialRoute: 'history',
+      initialRoute: 'start',
       routes: {
         
         //'checking': ( _ ) => CheckAuthScreen(),
