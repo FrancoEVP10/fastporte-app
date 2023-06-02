@@ -46,7 +46,7 @@ class _SearchScreenState extends State<SearchScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  'Search Vehicle',
+                  'Buscar Transportista',
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 ),
               ),
