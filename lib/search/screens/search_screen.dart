@@ -18,16 +18,18 @@ class _SearchScreenState extends State<SearchScreen> {
     {
       'image':
           'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png',
-      'nombre': 'Vehículo 1',
-      'calificacion': 4.5,
-      'descripcion': 'Descripción del vehículo 1',
+      'nombre': 'Oscar Canellas',
+      'calificacion': 5,
+      'descripcion':
+          'Hello. My name is Mario Gomez and I have a car that I use to give tourism service. I have too much experience because...',
     },
     {
       'image':
           'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png',
-      'nombre': 'Vehículo 2',
-      'calificacion': 3.8,
-      'descripcion': 'Descripción del vehículo 2',
+      'nombre': 'Oscar Canellas',
+      'calificacion': 5,
+      'descripcion':
+          'Hello. My name is Mario Gomez and I have a car that I use to give tourism service. I have too much experience because...',
     },
     // Add more example elements here
   ];
@@ -35,25 +37,25 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Search Vehicle'),
-      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Filtros de búsqueda',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Container(
+              alignment: Alignment.center, // Centra el contenido del contenedor
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Search Vehicle',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
             ListTile(
               title: const Text('Tipo de Servicio'),
               subtitle: Container(
                 decoration: BoxDecoration(
-                  color: Colors.purple[100],
+                  color: Colors.blue[100],
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: DropdownButton<String>(
@@ -82,7 +84,7 @@ class _SearchScreenState extends State<SearchScreen> {
               title: const Text('Tamaño de Vehículo'),
               subtitle: Container(
                 decoration: BoxDecoration(
-                  color: Colors.purple[100],
+                  color: Colors.blue[100],
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: DropdownButton<String>(
@@ -111,7 +113,7 @@ class _SearchScreenState extends State<SearchScreen> {
               title: const Text('Documentación Completa'),
               subtitle: Container(
                 decoration: BoxDecoration(
-                  color: Colors.purple[100],
+                  color: Colors.blue[100],
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: DropdownButton<String>(
@@ -150,7 +152,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   style: TextStyle(color: Colors.white),
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.purple[700],
+                  primary: Colors.blue[700],
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -163,15 +165,42 @@ class _SearchScreenState extends State<SearchScreen> {
               itemCount: results.length,
               itemBuilder: (context, index) {
                 final result = results[index];
-                return ListTile(
-                  leading: Image.network(result['image']),
-                  title: Text(result['nombre']),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Calificación: ${result['calificacion']}'),
-                      Text('Descripción: ${result['descripcion']}'),
+                return Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
                     ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                      leading: Image.network(result['image']),
+                      title: Text(result['nombre']),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
+                            child:
+                                Text('Calificación: ${result['calificacion']}'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
+                            child:
+                                Text('Descripción: ${result['descripcion']}'),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 );
               },
