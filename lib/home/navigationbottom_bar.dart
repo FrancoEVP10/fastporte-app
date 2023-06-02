@@ -1,4 +1,5 @@
 import 'package:fastporte_app/home/home_screen.dart';
+import 'package:fastporte_app/search/screens/search_screen.dart';
 import 'package:fastporte_app/static/support_screen.dart';
 import 'package:fastporte_app/widgets/navbar.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _MainPageState extends State<MainPage> {
         children: [
           //Aqui se pondrian los screens
           HomeScreen(),
-          Container(color: Colors.red,),
+          SearchScreen(),
           Container(color: Colors.blue,),
           SupportScreen(),
         ],
