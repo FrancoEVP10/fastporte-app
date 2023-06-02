@@ -16,13 +16,15 @@ class _SearchScreenState extends State<SearchScreen> {
   // List of example results
   List<Map<String, dynamic>> results = [
     {
-      'image': 'url_imagen_1',
+      'image':
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png',
       'nombre': 'Vehículo 1',
       'calificacion': 4.5,
       'descripcion': 'Descripción del vehículo 1',
     },
     {
-      'image': 'url_imagen_2',
+      'image':
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png',
       'nombre': 'Vehículo 2',
       'calificacion': 3.8,
       'descripcion': 'Descripción del vehículo 2',
@@ -58,7 +60,12 @@ class _SearchScreenState extends State<SearchScreen> {
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value),
+                  child: Container(
+                    width: double.infinity,
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(value),
+                  ),
                 );
               }).toList(),
             ),
@@ -99,14 +106,27 @@ class _SearchScreenState extends State<SearchScreen> {
               }).toList(),
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              // Logic to perform search based on selected filters
-              // You can use the values of selectedTipoServicio,
-              // selectedTamanoVehiculo, and selectedDocumentacion to filter the list
-              // of results and display only the desired items.
-            },
-            child: const Text('Buscar'),
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.all(16),
+            child: ElevatedButton(
+              onPressed: () {
+                // Logic to perform search based on selected filters
+                // You can use the values of selectedTipoServicio,
+                // selectedTamanoVehiculo, and selectedDocumentacion to filter the list
+                // of results and display only the desired items.
+              },
+              child: const Text(
+                'Buscar',
+                style: TextStyle(color: Colors.white),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple[500],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
           ),
           const SizedBox(height: 16),
           Expanded(
