@@ -203,7 +203,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 125),
+                      SizedBox(width: 80),
                       CircleAvatar(
                         radius: 20,
                         backgroundImage: NetworkImage(item['client']['photo']),
@@ -297,7 +297,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           fontWeight: FontWeight.w500, // Add this line
                         ),
                       ),
-                      SizedBox(width: 195),
+                      SizedBox(width: 140),
                       CircleAvatar(
                         radius: 20,
                         backgroundImage: NetworkImage(item['client']['photo']),
@@ -391,7 +391,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           fontWeight: FontWeight.w500, // Add this line
                         ),
                       ),
-                      SizedBox(width: 195),
+                      SizedBox(width: 140),
                       CircleAvatar(
                         radius: 20,
                         backgroundImage: NetworkImage(item['client']['photo']),
