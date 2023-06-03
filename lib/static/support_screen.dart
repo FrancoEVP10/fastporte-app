@@ -7,27 +7,30 @@ class SupportScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                left: 42,
-                bottom: 30,
-                right: 42,
-                top: 28,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 42,
+                  bottom: 30,
+                  right: 42,
+                  top: 28,
+                ),
+                child: Text(
+                  '¿Necesitas Ayuda?',
+                  style: TextStyle(fontSize: 24),
+                ),
               ),
-              child: Text(
-                '¿Necesitas Ayuda?',
-                style: TextStyle(fontSize: 24),
-              ),
-            ),
-            _SupportCard(),
-          ],
+              _SupportCard(),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
 
 class _SupportCard extends StatelessWidget {
   @override
