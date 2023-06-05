@@ -24,42 +24,49 @@ class NavBar extends StatelessWidget {
               final email = user.email;
               final photo = user.photo;
 
-              return Drawer(
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: [
-                    UserAccountsDrawerHeader(
-                      accountName: Text('$name $lastname'),
-                      accountEmail: Text(email),
-                      currentAccountPicture: CircleAvatar(
-                        child: _buildChild(photo),
+              return ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(90.0),
+                  bottomRight: Radius.circular(90.0),
+                ),
+                child: Drawer(
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: [
+                      UserAccountsDrawerHeader(
+                        accountName: Text('$name $lastname'),
+                        accountEmail: Text(email),
+                        currentAccountPicture: CircleAvatar(
+                          child: _buildChild(photo),
+                        ),
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(15, 21, 163, 1),
+                        ),
                       ),
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(15, 21, 163, 1),
-                      ),
-                    ),
-                    ListTile(
-                        leading: Icon(Icons.person_outline_outlined, size: 30),
+                      ListTile(
+                          leading:
+                              Icon(Icons.person_outline_outlined, size: 30),
+                          title: Text(
+                            'Perfil de usuario',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          onTap: () {
+                            Navigator.pushReplacementNamed(context, 'profile');
+                          }),
+                      ListTile(
+                        leading: Icon(Icons.logout, size: 30),
                         title: Text(
-                          'Perfil de usuario',
+                          'Cerrar Sesión',
                           style: TextStyle(fontSize: 20),
                         ),
-                        onTap: () {
-                          Navigator.pushReplacementNamed(context, 'profile');
-                        }),
-                    ListTile(
-                      leading: Icon(Icons.logout, size: 30),
-                      title: Text(
-                        'Cerrar Sesión',
-                        style: TextStyle(fontSize: 20),
+                        onTap: () async {
+                          await authService.logout();
+                          // ignore: use_build_context_synchronously
+                          Navigator.pushReplacementNamed(context, 'login');
+                        },
                       ),
-                      onTap: () async {
-                        await authService.logout();
-                        // ignore: use_build_context_synchronously
-                        Navigator.pushReplacementNamed(context, 'login');
-                      },
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             } else {

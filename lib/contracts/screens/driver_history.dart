@@ -8,8 +8,10 @@ enum ButtonType {
 }
 
 class HistoryScreen extends StatefulWidget {
+  const HistoryScreen({super.key});
+
   @override
-  _HistoryScreenState createState() => _HistoryScreenState();
+  State<HistoryScreen> createState() => _HistoryScreenState();
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
@@ -140,12 +142,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Container(
-                    //margin: EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(
-                      color: Colors.grey,
-                      thickness: 1.0,
-                    ),
+                  Divider(
+                    color: Colors.grey,
+                    thickness: 1.0,
                   ),
                   Text(
                     "From: ${item['from']}",
@@ -172,38 +171,41 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   ),
                   SizedBox(height: 10),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          print("a");
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                        ),
-                        child: Text(
-                          'Decline',
-                          style: TextStyle(
-                            color: Colors.white,
+                      Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              print("a");
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                            child: Text(
+                              'Decline',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      ElevatedButton(
-                        onPressed: () {
-                          print("a");
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF1ACC8D),
-                        ),
-                        child: Text(
-                          'Accept',
-                          style: TextStyle(
-                            color: Colors.white,
+                          SizedBox(width: 10),
+                          ElevatedButton(
+                            onPressed: () {
+                              print("a");
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF1ACC8D),
+                            ),
+                            child: Text(
+                              'Accept',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                      SizedBox(width: 80),
                       CircleAvatar(
                         radius: 20,
                         backgroundImage: NetworkImage(item['client']['photo']),
@@ -255,12 +257,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Container(
-                    //margin: EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(
-                      color: Colors.grey,
-                      thickness: 1.0,
-                    ),
+                  Divider(
+                    color: Colors.grey,
+                    thickness: 1.0,
                   ),
                   Text(
                     "From: ${item['from']}",
@@ -287,7 +286,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   ),
                   SizedBox(height: 10),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         "Price: S/.${item['amount']}",
@@ -349,12 +348,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Container(
-                    //margin: EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(
-                      color: Colors.grey,
-                      thickness: 1.0,
-                    ),
+                  Divider(
+                    color: Colors.grey,
+                    thickness: 1.0,
                   ),
                   Text(
                     "From: ${item['from']}",
@@ -381,7 +377,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   ),
                   SizedBox(height: 10),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         "Price: S/.${item['amount']}",
