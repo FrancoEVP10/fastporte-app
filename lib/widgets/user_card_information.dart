@@ -1,3 +1,4 @@
+import 'package:fastporte_app/comments/screens/driver_info.dart';
 import 'package:flutter/material.dart';
 
 class UserCardInformation extends StatelessWidget {
@@ -12,7 +13,9 @@ class UserCardInformation extends StatelessWidget {
         ),
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context)  => DriverInfoScreen()));
+          },
           child: SizedBox(
             width: 360,
             height: 110,
