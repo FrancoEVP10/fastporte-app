@@ -151,20 +151,21 @@ class _SearchScreenState extends State<SearchScreen> {
                   // selectedTamanoVehiculo, and selectedDocumentacion to filter the list
                   // of results and display only the desired items.
                 },
-                child: const Text(
-                  'Buscar',
-                  style: TextStyle(color: Colors.white),
-                ),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue[700],
+                  backgroundColor: Colors.blue[700],
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
+                ),
+                child: const Text(
+                  'Buscar',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
             const SizedBox(height: 16),
             ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: results.length,
               itemBuilder: (context, index) {
