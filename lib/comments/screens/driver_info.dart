@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -54,7 +55,89 @@ class _DriverInfoScreenState extends State<DriverInfoScreen> {
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          openDialog();
+        },
+        child: Icon(Icons.add),
+      ),
     );
+  }
+
+  Future openDialog() => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Añadir comentario', textAlign: TextAlign.center),
+          content: TextFormField(
+            inputFormatters: [LengthLimitingTextInputFormatter(255)],
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(),
+              labelText: 'Comentario',
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Este campo es obligatorio';
+              }
+              return null;
+            },
+            maxLines: 7,
+            minLines: 1,
+          ),
+          actions: [
+            Column(
+              children: [
+                Text('Califica al transportista', textAlign: TextAlign.center,),
+                SizedBox(height: 15),
+                RatingBar.builder(
+                  itemSize: 35,
+                  initialRating: 1,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  itemPadding: EdgeInsets.symmetric(horizontal: 3.0),
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {},
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateColor.resolveWith((states) => Color.fromRGBO(15, 21, 163, 1)),
+                      ),
+                      onPressed: () {
+                        buttonAction();
+                      },
+                      child: Text('Enviar', style: TextStyle(color: Colors.white),),
+                    ),
+                    SizedBox(width: 10),
+                    TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateColor.resolveWith((states) => Color.fromRGBO(15, 21, 163, 1)),
+                      ),
+                      onPressed: () {
+                        buttonAction();
+                      },
+                      child: Text('Cancelar', style: TextStyle(color: Colors.white),),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+
+  void buttonAction() {
+    Navigator.of(context).pop();
   }
 }
 
