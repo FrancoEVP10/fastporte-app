@@ -4,6 +4,7 @@ import 'package:fastporte_app/globals.dart' as globals;
 import 'package:fastporte_app/auth/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'user_service.dart';
 import 'package:http/http.dart' as http;
 
@@ -27,7 +28,20 @@ class AuthService extends ChangeNotifier {
 
     final resp = await http.post(url, body: json.encode(authData));
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-    globals.localId = decodedResp['localId'];
+
+    if (decodedResp['localId'] == null) {
+      Fluttertoast.showToast(
+          msg: "El correo ingresado ya existe",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 18.0);
+    } else {
+      globals.localId = decodedResp['localId'];
+    }
+
     if (decodedResp.containsKey('idToken')) {
       // Token hay que guardarlo en un lugar seguro
       await storage.write(key: 'token', value: decodedResp['idToken']);
@@ -46,7 +60,7 @@ class AuthService extends ChangeNotifier {
       url,
       body: user.toJson(),
       headers: {
-        'content-type' : 'application/json',
+        'content-type': 'application/json',
         if (token != null) 'Authorization': 'Bearer $token',
       },
     );
@@ -64,7 +78,7 @@ class AuthService extends ChangeNotifier {
       url,
       body: user.toJson(),
       headers: {
-        'content-type' : 'application/json',
+        'content-type': 'application/json',
         if (token != null) 'Authorization': 'Bearer $token',
       },
     );
@@ -94,8 +108,8 @@ class AuthService extends ChangeNotifier {
       globals.localId = decodedResp['localId'];
       try {
         await getUserById(globals.localId, decodedResp['idToken']);
-      } catch(e){
-        return 'Usuario no encontrado';
+      } catch (e) {
+        return 'El tipo de usuario no es correcto';
       }
 
       await storage.write(key: 'token', value: decodedResp['idToken']);
@@ -114,7 +128,7 @@ class AuthService extends ChangeNotifier {
     return await storage.read(key: 'token') ?? '';
   }
 
-    Future<User> getUserById(String userId, String? token) async {
+  Future<User> getUserById(String userId, String? token) async {
     final Uri url;
 
     if (globals.role == 'transportista') {
@@ -123,7 +137,6 @@ class AuthService extends ChangeNotifier {
       url = Uri.http(_baseUrlBack, '/api/clients/$userId');
     }
 
-    
     final resp = await http.get(
       url,
       headers: {
