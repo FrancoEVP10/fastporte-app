@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 
 class AuthService extends ChangeNotifier {
   final String _baseUrlBack = 'localhost:8080';
+  // final String _baseUrlBack = '192.168.0.112:8080'; // no me lo borren xd
   final String _baseUrl = 'identitytoolkit.googleapis.com';
   final String _firebaseToken = 'AIzaSyDnWZsX3Fv1M9cUw6QeR1D337mZl5FNjlI';
   final userService = UserService();

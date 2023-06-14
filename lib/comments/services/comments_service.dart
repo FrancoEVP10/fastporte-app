@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 class CommentsService extends ChangeNotifier {
   final String _baseUrlBack = 'localhost:8080';
+  // final String _baseUrlBack = '192.168.0.112:8080'; // no me lo borren xd
   late Comment comment;
   bool isSaving = false;
   final storage = FlutterSecureStorage();
