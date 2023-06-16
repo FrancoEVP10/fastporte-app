@@ -50,6 +50,7 @@ class MyApp extends StatelessWidget {
         'editprofile': ( _ ) => EditProfileScreen(), 
         'history': ( _ ) => HistoryScreen(), 
         'usercontracts': ( _ ) => UserContractsScreen(),
+
       },
       scaffoldMessengerKey: NotificationsService.messengerKey,
       theme: ThemeData.light().copyWith(
