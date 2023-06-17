@@ -1,5 +1,6 @@
 import 'package:fastporte_app/contracts/services/contract_service.dart';
 import 'package:flutter/material.dart';
+import 'package:fastporte_app/globals.dart' as globals;
 
 enum ButtonType {
   done,
@@ -36,7 +37,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     final contractsService = ContractService();
-    final contractsFuture = contractsService.getContracts();
+    var contractsFuture = contractsService.getHistoryContracts(globals.localId);
 
     return Scaffold(
       body: Column(
@@ -53,6 +54,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     _buttonColor2 =
                         Color(0xFFD3D3D3); // Change the button color
                     _buttonColor3 = Color(0xFFD3D3D3);
+                    contractsFuture =
+                        contractsService.getHistoryContracts(globals.localId);
                   });
                 },
                 style: ElevatedButton.styleFrom(
@@ -69,6 +72,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     _buttonColor2 =
                         Color(0xFF1ACC8D); // Change the button color
                     _buttonColor3 = Color(0xFFD3D3D3);
+                    contractsFuture =
+                        contractsService.getPendingContracts(globals.localId);
                   });
                 },
                 style: ElevatedButton.styleFrom(
@@ -86,6 +91,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         Color(0xFFD3D3D3); // Change the button color
                     _buttonColor3 =
                         Color(0xFF1ACC8D); // Change the button color
+                    contractsFuture =
+                        contractsService.getOfferContracts(globals.localId);
                   });
                 },
                 style: ElevatedButton.styleFrom(
@@ -107,6 +114,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   Widget waitingInfo(data) {
     final List<dynamic> apiData = data;
+    final contractService = ContractService();
 
     return Expanded(
       child: ListView.builder(
@@ -177,6 +185,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       ElevatedButton(
                         onPressed: () {
                           print("a");
+                          contractService.declineOfferDriver(
+                              item['id']);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
@@ -191,7 +201,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: () {
-                          print("a");
+                          contractService.acceptOfferDriver(
+                              item['id'], globals.localId);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFF1ACC8D),
