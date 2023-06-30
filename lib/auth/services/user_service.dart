@@ -6,7 +6,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class UserService extends ChangeNotifier {
-  final String _baseUrlBack = 'localhost:8090';
+  final String _baseUrlBack = 'localhost:8080';
+  // final String _baseUrlBack = '192.168.0.112:8080'; // no me lo borren xd
   final storage = FlutterSecureStorage();
   late User selectedUser;
 

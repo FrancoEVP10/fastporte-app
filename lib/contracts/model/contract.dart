@@ -16,6 +16,7 @@ class Contract {
   String description;
   User client;
   User driver;
+  bool visible;
 
   Contract({
     required this.id,
@@ -30,6 +31,7 @@ class Contract {
     required this.description,
     required this.client,
     required this.driver,
+    required this.visible,
   });
 
   factory Contract.fromJson(String str) => Contract.fromMap(json.decode((str)));
@@ -47,8 +49,9 @@ class Contract {
         amount: json["amount"],
         quantity: json["quantity"],
         description: json["description"],
-        client: json["client"],
-        driver: json["driver"],
+        client: User.fromMap(json["client"]),
+        driver: User.fromMap(json["driver"]),
+        visible: json["visible"],
   );
 
   Map<String, dynamic> toMap() => {
@@ -64,6 +67,7 @@ class Contract {
         "description": description,
         "client": client,
         "driver": driver,
+        "visible": visible,
   };
 
   Contract copy() => Contract(
@@ -79,6 +83,7 @@ class Contract {
         description: description,
         client: client,
         driver: driver,
+        visible: visible,
   );
 
 }
@@ -99,5 +104,6 @@ Contract createFakeContract() {
     description: faker.lorem.sentence(),
     client: createFakeUser(),
     driver: createFakeUser(),
+    visible: faker.randomGenerator.boolean(),
   );
 }

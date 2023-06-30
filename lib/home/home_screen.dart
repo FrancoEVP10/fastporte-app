@@ -2,6 +2,7 @@ import 'package:fastporte_app/auth/services/user_service.dart';
 import 'package:fastporte_app/widgets/user_card_information.dart';
 import 'package:fastporte_app/globals.dart' as globals;
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -30,8 +31,8 @@ class HomeScreen extends StatelessWidget {
                         children: [
                           SizedBox(height: 30),
                           Text(
-                            'Hola $name',
-                            style: TextStyle(
+                            'Bienvenido $name',
+                            style: GoogleFonts.openSans(
                               fontSize: 36,
                               fontWeight: FontWeight.w500,
                             ),
