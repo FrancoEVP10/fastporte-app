@@ -1,108 +1,118 @@
-import 'package:fastporte_app/contracts/services/contract_service.dart';
 import 'package:flutter/material.dart';
-
-enum ButtonType {
-  done,
-  current,
-  waiting,
-}
+import 'package:fastporte_app/contracts/services/contract_service.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'dart:html' as html;
 
 class HistoryScreen extends StatefulWidget {
-  const HistoryScreen({super.key});
-
   @override
-  State<HistoryScreen> createState() => _HistoryScreenState();
+  _HistoryScreenState createState() => _HistoryScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen> {
-  ButtonType selectedButton = ButtonType.done;
+class _HistoryScreenState extends State<HistoryScreen>
+    with SingleTickerProviderStateMixin, RestorationMixin {
+  late TabController _tabController;
+  List<String> tabs = ['Waiting', 'Done', 'Current'];
+  final RestorableInt tabIndex = RestorableInt(0);
+  final contractsService = ContractService();
+  late Future<List<dynamic>> contractsFuture =
+      contractsService.getPendingContracts();
 
-  Color _buttonColor1 = Color(0xFF1ACC8D);
-  Color _buttonColor2 = Color(0xFFD3D3D3);
-  Color _buttonColor3 = Color(0xFFD3D3D3);
+  @override
+  String get restorationId => 'tab_non_scrollable_demo';
 
-  Widget getInfoWidget(data) {
-    data ??= [];
-    switch (selectedButton) {
-      case ButtonType.done:
-        return doneInfo(data);
-      case ButtonType.current:
-        return currentInfo(data);
-      case ButtonType.waiting:
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    registerForRestoration(tabIndex, 'tab_index');
+    _tabController.index = tabIndex.value;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(
+      initialIndex: 0,
+      length: 3,
+      vsync: this,
+    );
+    _tabController.addListener(() {
+      // When the tab controller's value is updated, make sure to update the
+      // tab index value, which is state restorable.
+      setState(() {
+        tabIndex.value = _tabController.index;
+      });
+    });
+    contractsFuture = contractsService.getPendingContracts();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    tabIndex.dispose();
+    super.dispose();
+  }
+
+  Widget getTabContent(int index, data) {
+    switch (index) {
+      case 0:
         return waitingInfo(data);
+      case 1:
+        return doneInfo(data);
+      case 2:
+        return currentInfo(data);
       default:
         return Container();
     }
   }
 
+  Future<List<dynamic>> getUpdatedContracts(int index) {
+    switch (index) {
+      case 0:
+        return contractsService.getOfferContracts();
+      case 1:
+        return contractsService.getHistoryContracts();
+      case 2:
+        return contractsService.getPendingContracts();
+      default:
+        return contractsService.getPendingContracts();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final contractsService = ContractService();
-    final contractsFuture = contractsService.getContracts();
-
     return Scaffold(
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    selectedButton = ButtonType.done;
-                    _buttonColor1 =
-                        Color(0xFF1ACC8D); // Change the button color
-                    _buttonColor2 =
-                        Color(0xFFD3D3D3); // Change the button color
-                    _buttonColor3 = Color(0xFFD3D3D3);
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: _buttonColor1,
-                    foregroundColor: Color.fromRGBO(15, 21, 163, 1)),
-                child: Text('Done'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    selectedButton = ButtonType.current;
-                    _buttonColor1 =
-                        Color(0xFFD3D3D3); // Change the button color
-                    _buttonColor2 =
-                        Color(0xFF1ACC8D); // Change the button color
-                    _buttonColor3 = Color(0xFFD3D3D3);
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: _buttonColor2,
-                    foregroundColor: Color.fromRGBO(15, 21, 163, 1)),
-                child: Text('Current'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    selectedButton = ButtonType.waiting;
-                    _buttonColor1 =
-                        Color(0xFFD3D3D3); // Change the button color
-                    _buttonColor2 =
-                        Color(0xFFD3D3D3); // Change the button color
-                    _buttonColor3 =
-                        Color(0xFF1ACC8D); // Change the button color
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: _buttonColor3,
-                    foregroundColor: Color.fromRGBO(15, 21, 163, 1)),
-                child: Text('Waiting'),
-              ),
-            ],
-          ),
-          FutureBuilder(
-              future: contractsFuture,
-              builder: (context, AsyncSnapshot<List>? snapshot) {
-                return getInfoWidget(snapshot?.data);
-              })
-        ],
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text("Contracts"),
+        bottom: TabBar(
+          controller: _tabController,
+          isScrollable: false,
+          tabs: [
+            for (final tab in tabs) Tab(text: tab),
+          ],
+          onTap: (index) async {
+            setState(() {
+              contractsFuture = getUpdatedContracts(index);
+            });
+          },
+        ),
+      ),
+      body: FutureBuilder(
+        future: contractsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error loading data'));
+          } else {
+            return TabBarView(
+              controller: _tabController,
+              children: [
+                for (final tab in tabs)
+                  getTabContent(tabs.indexOf(tab), snapshot.data),
+              ],
+            );
+          }
+        },
       ),
     );
   }
@@ -177,7 +187,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         children: [
                           ElevatedButton(
                             onPressed: () {
-                              print("a");
+                              contractsService.declineOfferDriver(item['id']);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red,
@@ -192,7 +202,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           SizedBox(width: 10),
                           ElevatedButton(
                             onPressed: () {
-                              print("a");
+                              contractsService.acceptOfferDriver(item['id']);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFF1ACC8D),
@@ -225,6 +235,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget doneInfo(data) {
     final List<dynamic> apiData = data;
     //print(data);
+
     return Expanded(
       child: ListView.builder(
         itemCount: apiData.length,
@@ -245,7 +256,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   ),
                 ],
               ),
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 3),
+              padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -293,10 +304,23 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         style: TextStyle(
                           fontSize: 15,
                           color: Colors.black,
-                          fontWeight: FontWeight.w500, // Add this line
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      SizedBox(width: 140),
+                      ElevatedButton(
+                        onPressed: () {
+                          _launchURL();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.blue,
+                        ),
+                        child: Text(
+                          'Export',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                       CircleAvatar(
                         radius: 20,
                         backgroundImage: NetworkImage(item['client']['photo']),
@@ -403,11 +427,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
       ),
     );
   }
-}
 
-class MyData {
-  final String? title;
-  final String description;
-
-  MyData(this.title, this.description);
+  _launchURL() async {
+    html.window.open("https://firebasestorage.googleapis.com/v0/b/gener8-c323f.appspot.com/o/string.pdf?alt=media", "pdf");
+  }
 }
