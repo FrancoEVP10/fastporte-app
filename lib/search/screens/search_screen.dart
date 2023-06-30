@@ -31,7 +31,6 @@ class _SearchScreenState extends State<SearchScreen> {
       'descripcion':
           'Hello. My name is Mario Gomez and I have a car that I use to give tourism service. I have too much experience because...',
     },
-    // Add more example elements here
   ];
 
   @override
@@ -42,7 +41,7 @@ class _SearchScreenState extends State<SearchScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              alignment: Alignment.center, // Centra el contenido del contenedor
+              alignment: Alignment.center,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
@@ -51,115 +50,126 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
             ),
-            ListTile(
-              title: const Text('Tipo de Servicio'),
-              subtitle: Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue[100],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: DropdownButton<String>(
-                  value: selectedTipoServicio,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedTipoServicio = newValue!;
-                    });
-                  },
-                  items: <String>['carga', 'mudanza']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(value),
-                      ),
-                    );
-                  }).toList(),
-                  underline: Container(),
-                ),
-              ),
-            ),
-            ListTile(
-              title: const Text('Tamaño de Vehículo'),
-              subtitle: Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue[100],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: DropdownButton<String>(
-                  value: selectedTamanoVehiculo,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedTamanoVehiculo = newValue!;
-                    });
-                  },
-                  items: <String>['grande', 'pequeño']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(value),
-                      ),
-                    );
-                  }).toList(),
-                  underline: Container(),
-                ),
-              ),
-            ),
-            ListTile(
-              title: const Text('Documentación Completa'),
-              subtitle: Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue[100],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Container(
-                  width:
-                      150, // Establecer el ancho deseado para el desplegable de opciones
-                  child: DropdownButton<String>(
-                    value: selectedDocumentacion,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedDocumentacion = newValue!;
-                      });
-                    },
-                    items: <String>['si', 'no']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Text(value),
-                        ),
-                      );
-                    }).toList(),
-                    underline: Container(),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(16),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Logic to perform search based on selected filters
-                  // You can use the values of selectedTipoServicio,
-                  // selectedTamanoVehiculo, and selectedDocumentacion to filter the list
-                  // of results and display only the desired items.
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue[700],
-                  shape: RoundedRectangleBorder(
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              child: ListTile(
+                title: const Text('Tipo de Servicio'),
+                subtitle: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(8),
                   ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: DropdownButton<String>(
+                      value: selectedTipoServicio,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedTipoServicio = newValue!;
+                        });
+                      },
+                      items: <String>['carga', 'mudanza']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      underline: Container(),
+                    ),
+                  ),
                 ),
-                child: const Text(
-                  'Buscar',
-                  style: TextStyle(color: Colors.white),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              child: ListTile(
+                title: const Text('Tamaño de Vehículo'),
+                subtitle: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: DropdownButton<String>(
+                      value: selectedTamanoVehiculo,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedTamanoVehiculo = newValue!;
+                        });
+                      },
+                      items: <String>['grande', 'pequeño']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      underline: Container(),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              child: ListTile(
+                title: const Text('Documentación Completa'),
+                subtitle: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Container(
+                      width: 150,
+                      child: DropdownButton<String>(
+                        value: selectedDocumentacion,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedDocumentacion = newValue!;
+                          });
+                        },
+                        items: <String>['si', 'no']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        underline: Container(),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: FractionallySizedBox(
+                widthFactor: 0.5, // Ajusta el factor según el ancho deseado
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 16, top: 8),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Logic to perform search based on selected filters
+                      // You can use the values of selectedTipoServicio,
+                      // selectedTamanoVehiculo, and selectedDocumentacion to filter the list
+                      // of results and display only the desired items.
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 42, 11, 165),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text(
+                      'Buscar',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -210,8 +220,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             ],
                           ),
                         ),
-                        SizedBox(
-                            height: 8), // Aumentar el espacio vertical aquí
+                        SizedBox(height: 8),
                       ],
                     ),
                   ),
