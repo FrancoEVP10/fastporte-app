@@ -51,7 +51,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 child: Scaffold(
                   appBar: AppBar(
                     centerTitle: true,
-                    title: Text('FastPorte'),
+                    title: Text('Mi Perfil'),
                     leading: IconButton(
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () {

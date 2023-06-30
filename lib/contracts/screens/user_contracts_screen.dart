@@ -1,3 +1,5 @@
+import 'package:fastporte_app/contracts/model/contract.dart';
+import 'package:fastporte_app/contracts/services/contract_service.dart';
 import 'package:fastporte_app/contracts/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +11,8 @@ class UserContractsScreen extends StatefulWidget {
 }
 
 class _UserContractsScreenState extends State<UserContractsScreen> {
+  final contractsService = ContractService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,82 +32,74 @@ class _UserContractsScreenState extends State<UserContractsScreen> {
                     ),
                   ),
                 ),
-                ContractCard(
-                  avatarText: "A",
-                  title: "Contract 1",
-                  subtitle: "Contract 1 description",
-                  summary: const [
-                    SummaryRow(
-                      label: "Subject:",
-                      value: "Turistic Visit",
-                    ),
-                  ],
-                  details: const [
-                    DetailsRow(
-                      label: "From:",
-                      value: "Avenida Arica 123, Lima, Peru",
-                    ),
-                    DetailsRow(
-                      label: "To:",
-                      value: "Ciudad de Caral, Lomas de Lachay",
-                    ),
-                    DetailsRow(
-                      label: "Date:",
-                      value: "21/10/2023",
-                    ),
-                    DetailsRow(
-                      label: "Time:",
-                      value: "8:00 - 20:00",
-                    ),
-                    DetailsRow(
-                      label: "Quantity:",
-                      value: "15 personas",
-                    ),
-                  ],
-                  amount: const AmountRow(
-                    label: "Amount:",
-                    value: "S/ 1560",
-                  ),
-                  onDeclinePressed: () {},
+                FutureBuilder(
+                  future: contractsService.getPendingContracts(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final contracts = snapshot.data as List<Contract>;
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: contracts.length,
+                        itemBuilder: (context, index) {
+                          final contract = contracts[index];
+                          if (!contract.visible) {
+                            return const SizedBox.shrink();
+                          }
+                          return ContractCard(
+                            avatarText: "A",
+                            title: "Contract $index",
+                            subtitle: contract.description,
+                            summary: [
+                              SummaryRow(
+                                label: "Subject:",
+                                value: contract.subject,
+                              ),
+                            ],
+                            details: [
+                              DetailsRow(
+                                label: "From:",
+                                value: contract.from,
+                              ),
+                              DetailsRow(
+                                label: "To:",
+                                value: contract.to,
+                              ),
+                              DetailsRow(
+                                label: "Date:",
+                                value: contract.timeArrival,
+                              ),
+                              DetailsRow(
+                                label: "Time:",
+                                value: contract.timeDeparture,
+                              ),
+                              DetailsRow(
+                                label: "Quantity:",
+                                value: contract.quantity,
+                              ),
+                            ],
+                            amount: AmountRow(
+                              label: "Amount:",
+                              value: contract.amount,
+                            ),
+                            onDeclinePressed: () async {
+                              Contract res = await contractsService.updateContractVisible(contract.id);
+                              setState(() {
+                                if (res.visible == false) {
+                                  contracts[index] = res;
+                                }
+                              });
+                            },
+                          );
+                        },
+                      );
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
                 ),
-                ContractCard(
-                  avatarText: "A",
-                  title: "Contract 1",
-                  subtitle: "Contract 1 description",
-                  summary: const [
-                    SummaryRow(
-                      label: "Subject:",
-                      value: "Turistic Visit",
-                    ),
-                  ],
-                  details: const [
-                    DetailsRow(
-                      label: "From:",
-                      value: "Avenida Arica 123, Lima, Peru",
-                    ),
-                    DetailsRow(
-                      label: "To:",
-                      value: "Ciudad de Caral, Lomas de Lachay",
-                    ),
-                    DetailsRow(
-                      label: "Date:",
-                      value: "21/10/2023",
-                    ),
-                    DetailsRow(
-                      label: "Time:",
-                      value: "8:00 - 20:00",
-                    ),
-                    DetailsRow(
-                      label: "Quantity:",
-                      value: "15 personas",
-                    ),
-                  ],
-                  amount: const AmountRow(
-                    label: "Amount:",
-                    value: "S/ 1560",
-                  ),
-                  onDeclinePressed: () {},
-                )
               ],
             ),
           )

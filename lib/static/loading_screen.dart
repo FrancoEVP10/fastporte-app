@@ -28,10 +28,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('FastPorte'),
-      ),
+      backgroundColor: Colors.grey,
       body: Center(
         child: CircularProgressIndicator(
           value: _progress,
