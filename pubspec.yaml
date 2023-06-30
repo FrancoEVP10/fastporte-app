@@ -41,6 +41,10 @@ dependencies:
   faker: ^2.0.0
   google_fonts: ^5.0.0
   flutter_rating_bar: ^4.0.1
+  drift: ^2.8.2
+  sqlite3_flutter_libs: ^0.5.0
+  path_provider: ^2.0.0
+  path: ^1.8.3
   #flutter_native_splash: ^2.2.19
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -59,6 +63,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  drift_dev: ^2.8.3
+  build_runner: ^2.4.5
 
 #flutter_icons:
 #  android: "launcher_icon"
