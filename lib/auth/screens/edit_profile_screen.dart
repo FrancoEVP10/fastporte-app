@@ -92,7 +92,6 @@ class _UserScreenBody extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 10),
           ],
         ),
       ),
@@ -155,7 +154,6 @@ class _UserForm extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 30),
           child: TextFormField(
-            keyboardType: TextInputType.number,
             inputFormatters: [LengthLimitingTextInputFormatter(9)],
             decoration: InputDecoration(
               filled: true,

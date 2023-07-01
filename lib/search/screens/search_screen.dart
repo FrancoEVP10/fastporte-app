@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -8,30 +10,31 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  final String _baseUrlBack = 'localhost:8080';
+
   // Variables for storing selected filter values
   String selectedTipoServicio = 'carga';
   String selectedTamanoVehiculo = 'grande';
   String selectedDocumentacion = 'si';
 
   // List of example results
-  List<Map<String, dynamic>> results = [
-    {
-      'image':
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png',
-      'nombre': 'Oscar Canellas',
-      'calificacion': 5,
-      'descripcion':
-          'Hello. My name is Mario Gomez and I have a car that I use to give tourism service. I have too much experience because...',
-    },
-    {
-      'image':
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png',
-      'nombre': 'Oscar Canellas',
-      'calificacion': 5,
-      'descripcion':
-          'Hello. My name is Mario Gomez and I have a car that I use to give tourism service. I have too much experience because...',
-    },
-  ];
+  List<Map<String, dynamic>> results = [];
+
+  Future<void> performSearch() async {
+    final url = Uri.http(_baseUrlBack, '/api/drivers'); // Agrega esta línea para construir la URL completa
+
+    final response = await http.get(url); // Cambia el método de solicitud a GET
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      setState(() {
+        results = List<Map<String, dynamic>>.from(data);
+      });
+    } else {
+      // Manejo de errores en la respuesta del servidor
+      print('Error en la solicitud: ${response.statusCode}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
