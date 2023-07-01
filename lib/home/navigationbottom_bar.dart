@@ -2,6 +2,7 @@ import 'package:fastporte_app/contracts/screens/screens.dart';
 import 'package:fastporte_app/home/home_screen.dart';
 import 'package:fastporte_app/search/screens/search_screen.dart';
 import 'package:fastporte_app/static/support_screen.dart';
+import 'package:fastporte_app/vehicle/screens/vehicle_experience_screen.dart';
 import 'package:fastporte_app/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:fastporte_app/globals.dart' as globals;
@@ -36,7 +37,10 @@ class _MainPageState extends State<MainPage> {
         children: [
           //Aqui se pondrian los screens
           HomeScreen(),
-          SearchScreen(),
+          if (globals.role == 'cliente')
+            SearchScreen(),
+          if (globals.role == 'transportista')
+            VehicleAndExperienceScreen(),
           if (globals.role == 'cliente')
             UserContractsScreen(),
           if (globals.role == 'transportista')

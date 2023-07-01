@@ -420,11 +420,10 @@ class _DialogFormState extends State<_DialogForm> {
                       backgroundColor: MaterialStateColor.resolveWith(
                           (states) => Color.fromRGBO(15, 21, 163, 1)),
                     ),
-                    /*onPressed: commentsService.isSaving ? null : () async {
+                    onPressed: commentsService.isSaving ? null : () async {
                       await commentsService.createComment(Comment(client: client, comment: comment, driver: driver, id: id, star: star));
-                      
-                    },*/
-                    onPressed: () {  },
+                      buttonAction();
+                    },
                     child: Text(
                       'Enviar',
                       style: TextStyle(color: Colors.white),

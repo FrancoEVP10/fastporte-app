@@ -7,7 +7,7 @@ import 'package:fastporte_app/auth/services/user_service.dart';
 import 'package:fastporte_app/contracts/services/contract_service.dart';
 import 'package:fastporte_app/home/navigationbottom_bar.dart';
 import 'package:fastporte_app/static/support_screen.dart';
-import 'package:fastporte_app/vehicle/model/vehicle.dart';
+import 'package:fastporte_app/vehicle/screens/vehicle_experience_screen.dart';
 import 'package:fastporte_app/vehicle/service/vehicle_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -54,6 +54,7 @@ class MyApp extends StatelessWidget {
         'editprofile': (_) => EditProfileScreen(),
         'history': (_) => HistoryScreen(),
         'usercontracts': (_) => UserContractsScreen(),
+        'vehicleandexperience': (_) => VehicleAndExperienceScreen(),
         'create-contract': (_) => CreateContractScreen(),
       },
       scaffoldMessengerKey: NotificationsService.messengerKey,

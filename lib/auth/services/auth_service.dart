@@ -9,7 +9,7 @@ import 'user_service.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService extends ChangeNotifier {
-  final String _baseUrlBack = 'localhost:8080';
+  final String _baseUrlBack = 'fastporte-backend.azurewebsites.net';
   // final String _baseUrlBack = '192.168.0.112:8080'; // no me lo borren xd
   final String _baseUrl = 'identitytoolkit.googleapis.com';
   final String _firebaseToken = 'AIzaSyDnWZsX3Fv1M9cUw6QeR1D337mZl5FNjlI';
@@ -54,7 +54,7 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<String> createUserBackend(User user) async {
-    final url = Uri.http(_baseUrlBack, '/api/clients');
+    final url = Uri.https(_baseUrlBack, '/api/clients');
     //final url = Uri.https(_baseUrlBack, '/api/clients');
     final token = await storage.read(key: 'token');
     final resp = await http.post(
@@ -72,7 +72,7 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<String> createUserDriverBackend(User user) async {
-    final url = Uri.http(_baseUrlBack, '/api/drivers');
+    final url = Uri.https(_baseUrlBack, '/api/drivers');
     //final url = Uri.https(_baseUrlBack, '/api/clients');
     final token = await storage.read(key: 'token');
     final resp = await http.post(
@@ -133,9 +133,9 @@ class AuthService extends ChangeNotifier {
     final Uri url;
 
     if (globals.role == 'transportista') {
-      url = Uri.http(_baseUrlBack, '/api/drivers/$userId');
+      url = Uri.https(_baseUrlBack, '/api/drivers/$userId');
     } else {
-      url = Uri.http(_baseUrlBack, '/api/clients/$userId');
+      url = Uri.https(_baseUrlBack, '/api/clients/$userId');
     }
 
     final resp = await http.get(

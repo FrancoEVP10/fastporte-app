@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fastporte_app/contracts/services/contract_service.dart';
-import 'package:url_launcher/url_launcher.dart';
 // import 'dart:html' as html;
 
 class HistoryScreen extends StatefulWidget {
@@ -81,9 +80,8 @@ class _HistoryScreenState extends State<HistoryScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text("Contracts"),
-        bottom: TabBar(
+        flexibleSpace: TabBar(
+          indicatorColor: Color.fromRGBO(26, 204, 141, 1),
           controller: _tabController,
           isScrollable: false,
           tabs: [
@@ -126,7 +124,7 @@ class _HistoryScreenState extends State<HistoryScreen>
         itemBuilder: (BuildContext context, int index) {
           final item = apiData[index];
           return Container(
-            height: 200,
+            height: 220,
             margin: EdgeInsets.all(10),
             child: Container(
               decoration: BoxDecoration(
@@ -242,7 +240,7 @@ class _HistoryScreenState extends State<HistoryScreen>
         itemBuilder: (BuildContext context, int index) {
           final item = apiData[index];
           return Container(
-            height: 200,
+            height: 220,
             margin: EdgeInsets.all(10),
             child: Container(
               decoration: BoxDecoration(
@@ -346,7 +344,7 @@ class _HistoryScreenState extends State<HistoryScreen>
         itemBuilder: (BuildContext context, int index) {
           final item = apiData[index];
           return Container(
-            height: 200,
+            height: 220,
             margin: EdgeInsets.all(10),
             child: Container(
               decoration: BoxDecoration(

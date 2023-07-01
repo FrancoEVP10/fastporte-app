@@ -5,13 +5,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class VehicleService extends ChangeNotifier {
-  final String _baseUrlBack = 'localhost:8080';
+  final String _baseUrlBack = 'fastporte-backend.azurewebsites.net';
   // final String _baseUrlBack = '192.168.0.112:8080'; // no me lo borren xd
   bool isSaving = false;
   final storage = FlutterSecureStorage();
 
-  Future<Vehicle> getVehicleByDriverId(String driverId) async {
-    final Uri url = Uri.http(_baseUrlBack, '/api/vehicle/driver/$driverId');
+  Future<dynamic> getVehicleByDriverId(String driverId) async {
+    final Uri url = Uri.https(_baseUrlBack, '/api/vehicle/driver/$driverId');
     final token = await storage.read(key: 'token');
 
     final resp = await http.get(
@@ -24,11 +24,11 @@ class VehicleService extends ChangeNotifier {
 
     if (resp.statusCode == 200) {
       final userJson = jsonDecode(utf8.decode(resp.bodyBytes));
-      final user = Vehicle.fromMap(userJson);
+      final user = Vehicle.fromMap(userJson[0]);
 
       return user;
     } else {
-      throw Exception('Error al obtener el usuario ${resp.statusCode}');
+      return null;
     }
   }
 
@@ -55,7 +55,7 @@ class VehicleService extends ChangeNotifier {
   }
 
   Future<List<dynamic>> getAllVehicles() async {
-    final Uri url = Uri.http(_baseUrlBack, '/api/vehicle');
+    final Uri url = Uri.https(_baseUrlBack, '/api/vehicle');
     final token = await storage.read(key: 'token');
 
     final resp = await http.get(

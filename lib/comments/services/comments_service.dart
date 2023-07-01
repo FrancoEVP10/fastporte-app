@@ -6,17 +6,17 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class CommentsService extends ChangeNotifier {
-  final String _baseUrlBack = 'localhost:8080';
+  final String _baseUrlBack = 'fastporte-backend.azurewebsites.net';
   // final String _baseUrlBack = '192.168.0.112:8080'; // no me lo borren xd
   late Comment comment;
   bool isSaving = false;
   final storage = FlutterSecureStorage();
 
 
-    Future<Comment> createComment(Comment comment) async {
-    final url = Uri.http(_baseUrlBack, '/api/comments/add/${comment.client.id}/${comment.driver.id}');
+    Future<dynamic> createComment(Comment newComment) async {
+    final url = Uri.https(_baseUrlBack, '/api/comments/add/${newComment.client.id}/${newComment.driver.id}');
     //final url = Uri.https(_baseUrlBack, '/api/clients');
-    final body = comment.toJson();
+    Map<String, String> body = {'comment': newComment.comment, 'star': newComment.star};
     final token = await storage.read(key: 'token');
     final resp = await http.post(
       url,
@@ -29,11 +29,11 @@ class CommentsService extends ChangeNotifier {
     // ignore: unused_local_variable
     final decodedData = json.decode(resp.body);
 
-    return comment;
+    return decodedData;
   }
 
   Future<List<Comment>> getCommentsByDriverId(String driverId) async {
-    final Uri url = Uri.http(_baseUrlBack, '/api/comments/driver/$driverId');
+    final Uri url = Uri.https(_baseUrlBack, '/api/comments/driver/$driverId');
     final token = await storage.read(key: 'token');
 
     final resp = await http.get(
@@ -65,7 +65,7 @@ class CommentsService extends ChangeNotifier {
   }
 
     Future<List<dynamic>> getAllComments() async {
-    final Uri url = Uri.http(_baseUrlBack, '/api/comments');
+    final Uri url = Uri.https(_baseUrlBack, '/api/comments');
     final token = await storage.read(key: 'token');
 
     final resp = await http.get(
@@ -83,7 +83,7 @@ class CommentsService extends ChangeNotifier {
       //print(contracts);
       return vehicles;
     } else {
-      throw Exception('Error al obtener comentarios ${resp.statusCode}');
+      return [];
     }
   }
 

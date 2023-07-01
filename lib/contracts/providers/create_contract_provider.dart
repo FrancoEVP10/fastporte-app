@@ -1,10 +1,6 @@
-import 'dart:convert';
-
-import 'package:fastporte_app/contracts/model/contract.dart';
 import 'package:fastporte_app/vehicle/model/vehicle.dart';
 import 'package:flutter/material.dart';
 import 'package:fastporte_app/globals.dart' as globals;
-import 'package:intl/intl.dart';
 import '../../auth/services/user_service.dart';
 import '../services/contract_service.dart';
 
