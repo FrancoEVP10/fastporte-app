@@ -33,7 +33,7 @@ class VehicleService extends ChangeNotifier {
   }
 
   Future<List<Vehicle>> getVehicleByCategoryAndQuantity(String category, int quantity) async {
-    final Uri url = Uri.http(_baseUrlBack, '/api/vehicle/find/$category/$quantity');
+    final Uri url = Uri.https(_baseUrlBack, '/api/vehicle/find/$category/$quantity');
     final token = await storage.read(key: 'token');
 
     final resp = await http.get(
