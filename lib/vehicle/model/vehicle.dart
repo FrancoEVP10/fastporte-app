@@ -20,6 +20,16 @@ class Vehicle {
         required this.typeCar,
     });
 
+    //empty constructor
+    Vehicle.empty()
+      : brand = '',
+        category = '',
+        driver = User.empty(),
+        id = 0,
+        photoCar = '',
+        quantity = 0,
+        typeCar = '';
+
     Vehicle copyWith({
         String? brand,
         String? category,

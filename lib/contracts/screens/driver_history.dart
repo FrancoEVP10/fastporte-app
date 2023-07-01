@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fastporte_app/contracts/services/contract_service.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:html' as html;
+// import 'dart:html' as html;
 
 class HistoryScreen extends StatefulWidget {
   @override
@@ -102,7 +102,7 @@ class _HistoryScreenState extends State<HistoryScreen>
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error loading data'));
+            return Center(child: Text('No existen contratos disponibles'));
           } else {
             return TabBarView(
               controller: _tabController,
@@ -307,25 +307,25 @@ class _HistoryScreenState extends State<HistoryScreen>
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          _launchURL();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blue,
-                        ),
-                        child: Text(
-                          'Export',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundImage: NetworkImage(item['client']['photo']),
-                        backgroundColor: Colors.grey,
-                      ),
+                      // ElevatedButton(
+                      //   onPressed: () {
+                      //     // _launchURL();
+                      //   },
+                      //   style: ElevatedButton.styleFrom(
+                      //     primary: Colors.blue,
+                      //   ),
+                      //   child: Text(
+                      //     'Export',
+                      //     style: TextStyle(
+                      //       color: Colors.white,
+                      //     ),
+                      //   ),
+                      // ),
+                      // CircleAvatar(
+                      //   radius: 20,
+                      //   backgroundImage: NetworkImage(item['client']['photo']),
+                      //   backgroundColor: Colors.grey,
+                      // ),
                     ],
                   ),
                 ],
@@ -428,7 +428,7 @@ class _HistoryScreenState extends State<HistoryScreen>
     );
   }
 
-  _launchURL() async {
-    html.window.open("https://firebasestorage.googleapis.com/v0/b/gener8-c323f.appspot.com/o/string.pdf?alt=media", "pdf");
-  }
+  // _launchURL() async {
+  //   html.window.open("https://firebasestorage.googleapis.com/v0/b/gener8-c323f.appspot.com/o/string.pdf?alt=media", "pdf");
+  // }
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:fastporte_app/contracts/model/contract.dart';
 import 'package:fastporte_app/globals.dart' as globals;
 import 'package:flutter/material.dart';
@@ -7,13 +8,64 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 class ContractService extends ChangeNotifier {
-  //static String _baseUrlBack = 'localhost:8080';
+  // static String _baseUrlBack = 'localhost:8080';
   final String _baseUrlBack = 'localhost:8080';
   // final String _baseUrlBack = '192.168.0.112:8080'; // no me lo borren xd
   late Contract contract;
 
   bool isSaving = false;
   final storage = FlutterSecureStorage();
+
+  Future<dynamic> createContract(clientId, driverId, body) async {
+    final Uri url = Uri.http(_baseUrlBack, '/api/contracts/add/$clientId/$driverId');
+
+    final token = await storage.read(key: 'token');
+
+    // HttpClient httpClient = HttpClient();
+    // HttpClientRequest request = await httpClient.postUrl(url);
+    // request.headers.set('Accept', 'application/json');
+    // request.headers.set('Content-type', 'application/json');
+    // request.headers.set('Authorization', 'Bearer $token');
+    // request.add(utf8.encode(json.encode(body)));
+    // HttpClientResponse response = await request.close();
+    // String reply = await utf8.decoder.bind(response).join();
+    // print(reply);
+    // httpClient.close();
+
+    // return reply;
+
+    final response = await http.post(
+      url, 
+      headers: {
+        'content-type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+      // body: data,
+      body: jsonEncode(body),
+      // encoding: Encoding.getByName('utf-8'),
+    );
+    // final encodedBody = body.entries
+    //   .map((entry) =>
+    //       '${Uri.encodeComponent(entry.key)}=${Uri.encodeComponent(jsonEncode(entry.value))}')
+    //   .join('&');
+
+    // final response = await http.post(
+    //   url,
+    //   headers: {
+    //     'Content-Type': 'application/x-www-form-urlencoded',
+    //     if (token != null) 'Authorization': 'Bearer $token',
+    //   },
+    //   body: encodedBody
+    // );
+    if (response.statusCode == 201) {
+      final contractJson = jsonDecode(utf8.decode(response.bodyBytes));;
+      final contract = Contract.fromMap(contractJson);
+      return contract;
+    } else {
+      print('error: ${response.body}');
+      return null;
+    }
+  }
 
   Future<List<dynamic>> getContracts() async {
     final Uri url = Uri.http(_baseUrlBack, '/api/contracts');
@@ -61,7 +113,7 @@ class ContractService extends ChangeNotifier {
       final contracts = convertList(contractsJson);
       return contracts;
     } else {
-      throw Exception('Error al obtener el usuario ${response.statusCode}');
+      return [];
     }
   }
 
@@ -262,7 +314,7 @@ class ContractService extends ChangeNotifier {
     //print(item.runtimeType);
     String jsonString = json.encode(item);
     dynamic object = json.decode(jsonString);
-    //print(object);
+    // print(object);
     return object;
 
     // Add more type conversions as needed
