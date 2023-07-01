@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fastporte_app/contracts/services/contract_service.dart';
-import 'package:url_launcher/url_launcher.dart';
 // import 'dart:html' as html;
 
 class HistoryScreen extends StatefulWidget {
