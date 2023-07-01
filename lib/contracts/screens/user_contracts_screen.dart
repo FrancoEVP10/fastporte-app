@@ -36,54 +36,60 @@ class _UserContractsScreenState extends State<UserContractsScreen> {
                   future: contractsService.getPendingContracts(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      final contracts = snapshot.data as List<Contract>;
+                      final contracts = snapshot.data as List<dynamic>;
+                      if (contracts.isEmpty) {
+                        return const Center(
+                          child: Text("No pending contracts"),
+                        );
+                      }
                       return ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: contracts.length,
                         itemBuilder: (context, index) {
                           final contract = contracts[index];
-                          if (!contract.visible) {
+                          // print(contract);
+                          if (!contract['visible']) {
                             return const SizedBox.shrink();
                           }
                           return ContractCard(
                             avatarText: "A",
                             title: "Contract $index",
-                            subtitle: contract.description,
+                            subtitle: contract['description'],
                             summary: [
                               SummaryRow(
                                 label: "Subject:",
-                                value: contract.subject,
+                                value: contract['subject'],
                               ),
                             ],
                             details: [
                               DetailsRow(
                                 label: "From:",
-                                value: contract.from,
+                                value: contract['from'],
                               ),
                               DetailsRow(
                                 label: "To:",
-                                value: contract.to,
+                                value: contract['to'],
                               ),
                               DetailsRow(
                                 label: "Date:",
-                                value: contract.timeArrival,
+                                value: contract['timeArrival'],
                               ),
                               DetailsRow(
                                 label: "Time:",
-                                value: contract.timeDeparture,
+                                value: contract['timeDeparture'],
                               ),
                               DetailsRow(
                                 label: "Quantity:",
-                                value: contract.quantity,
+                                value: contract['quantity'],
                               ),
                             ],
                             amount: AmountRow(
                               label: "Amount:",
-                              value: contract.amount,
+                              value: contract['amount'],
                             ),
                             onDeclinePressed: () async {
-                              Contract res = await contractsService.updateContractVisible(contract.id);
+                              Contract res = await contractsService.updateContractVisible(contract['id']);
                               setState(() {
                                 if (res.visible == false) {
                                   contracts[index] = res;
