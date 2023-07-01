@@ -6,7 +6,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class UserService extends ChangeNotifier {
-  final String _baseUrlBack = 'localhost:8080';
+  final String _baseUrlBack = 'fastporte-backend.azurewebsites.net';
+  // final String _baseUrlBack = '192.168.0.112:8080'; // no me lo borren xd
   final storage = FlutterSecureStorage();
   late User selectedUser;
 
@@ -16,9 +17,9 @@ class UserService extends ChangeNotifier {
     final Uri url;
 
     if (globals.role == 'transportista') {
-      url = Uri.http(_baseUrlBack, '/api/drivers/$userId');
+      url = Uri.https(_baseUrlBack, '/api/drivers/$userId');
     } else {
-      url = Uri.http(_baseUrlBack, '/api/clients/$userId');
+      url = Uri.https(_baseUrlBack, '/api/clients/$userId');
     }
 
     final token = await storage.read(key: 'token');
@@ -43,9 +44,9 @@ class UserService extends ChangeNotifier {
   Future<String> updateUser(User user) async {
     final Uri url;
     if (globals.role == 'transportista') {
-      url = Uri.http(_baseUrlBack, '/api/drivers/${user.id}');
+      url = Uri.https(_baseUrlBack, '/api/drivers/${user.id}');
     } else {
-      url = Uri.http(_baseUrlBack, '/api/clients/${user.id}');
+      url = Uri.https(_baseUrlBack, '/api/clients/${user.id}');
     }
     final token = await storage.read(key: 'token');
     final resp = await http.put(

@@ -27,6 +27,18 @@ class User {
     required this.username,
   });
 
+  User.empty()
+      : birthdate = DateTime.now(),
+        description = '',
+        email = '',
+        id = '',
+        lastname = '',
+        name = '',
+        phone = '',
+        photo = '',
+        region = '',
+        username = '';
+
   factory User.fromJson(String str) => User.fromMap(json.decode((str)));
 
   String toJson() => json.encode((toMap()));

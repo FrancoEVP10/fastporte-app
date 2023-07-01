@@ -1,38 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import '../../vehicle/model/vehicle.dart';
+import '../../vehicle/service/vehicle_service.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  _SearchScreenState createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  final vehicleService = VehicleService();
+
   // Variables for storing selected filter values
   String selectedTipoServicio = 'carga';
-  String selectedTamanoVehiculo = 'grande';
+  int selectedQuantity = 1;
   String selectedDocumentacion = 'si';
-
-  // List of example results
-  List<Map<String, dynamic>> results = [
-    {
-      'image':
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png',
-      'nombre': 'Oscar Canellas',
-      'calificacion': 5,
-      'descripcion':
-          'Hello. My name is Mario Gomez and I have a car that I use to give tourism service. I have too much experience because...',
-    },
-    {
-      'image':
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png',
-      'nombre': 'Oscar Canellas',
-      'calificacion': 5,
-      'descripcion':
-          'Hello. My name is Mario Gomez and I have a car that I use to give tourism service. I have too much experience because...',
-    },
-    // Add more example elements here
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -42,184 +27,224 @@ class _SearchScreenState extends State<SearchScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              alignment: Alignment.center, // Centra el contenido del contenedor
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'Buscar Transportista',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                ),
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Buscar Transportista',
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
             ),
-            ListTile(
-              title: const Text('Tipo de Servicio'),
-              subtitle: Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue[100],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: DropdownButton<String>(
-                  value: selectedTipoServicio,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedTipoServicio = newValue!;
-                    });
-                  },
-                  items: <String>['carga', 'mudanza']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(value),
-                      ),
-                    );
-                  }).toList(),
-                  underline: Container(),
-                ),
-              ),
-            ),
-            ListTile(
-              title: const Text('Tamaño de Vehículo'),
-              subtitle: Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue[100],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: DropdownButton<String>(
-                  value: selectedTamanoVehiculo,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedTamanoVehiculo = newValue!;
-                    });
-                  },
-                  items: <String>['grande', 'pequeño']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(value),
-                      ),
-                    );
-                  }).toList(),
-                  underline: Container(),
-                ),
-              ),
-            ),
-            ListTile(
-              title: const Text('Documentación Completa'),
-              subtitle: Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue[100],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Container(
-                  width:
-                      150, // Establecer el ancho deseado para el desplegable de opciones
-                  child: DropdownButton<String>(
-                    value: selectedDocumentacion,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedDocumentacion = newValue!;
-                      });
-                    },
-                    items: <String>['si', 'no']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Text(value),
-                        ),
+            _buildTipoServicioDropdown(),
+            _buildQuantityInput(),
+            // _buildDocumentacionDropdown(),
+            // _buildSearchButton(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: FutureBuilder(
+                  future: vehicleService.getVehicleByCategoryAndQuantity(
+                      selectedTipoServicio, selectedQuantity),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final vehicles = snapshot.data as List<Vehicle>;
+                      if (vehicles.isEmpty) {
+                        return const Center(
+                          child: Text('No se encontraron vehículos'),
+                        );
+                      }
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: vehicles.length,
+                          itemBuilder: (context, index) {
+                            final vehicle = vehicles[index];
+                            final driver = vehicle.driver;
+                            return GestureDetector(
+                              onTap: () => {
+                                print('Vehicle selected: ${vehicle.id}'),
+                                Navigator.pushNamed(context, 'create-contract', arguments: { 'vehicle': vehicle })
+                              },
+                              child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      ClipOval(
+                                          child: _buildDriverImage(driver.photo)),
+                                      Flexible(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 8.0),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(bottom: 8.0),
+                                                child: Text(
+                                                  "${driver.name} ${driver.lastname}",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold
+                                                  )
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(bottom: 8.0),
+                                                child: Text(
+                                                  driver.description, 
+                                                  textAlign: TextAlign.justify
+                                                ),
+                                              ),
+                                              Text('Vehicle brand: ${vehicle.brand}'),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              )
+                            );
+                          });
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
                       );
-                    }).toList(),
-                    underline: Container(),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(16),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Logic to perform search based on selected filters
-                  // You can use the values of selectedTipoServicio,
-                  // selectedTamanoVehiculo, and selectedDocumentacion to filter the list
-                  // of results and display only the desired items.
-                },
-                child: const Text(
-                  'Buscar',
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.blue[700],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: results.length,
-              itemBuilder: (context, index) {
-                final result = results[index];
-                return Container(
-                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 28),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListTile(
-                          leading: Image.network(result['image']),
-                          title: Text(result['nombre']),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 4.0),
-                                child: Text(
-                                    'Calificación: ${result['calificacion']}'),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 4.0),
-                                child: Text(
-                                    'Descripción: ${result['descripcion']}'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                            height: 8), // Aumentar el espacio vertical aquí
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+                    }
+                  }),
+            )
           ],
         ),
       ),
     );
   }
+
+  Widget _buildDriverImage(photoUrl) {
+    if (photoUrl.isEmpty) {
+      return Image.asset("assets/imgs/user-vector.png",
+          width: 100, height: 100);
+    } else {
+      return Image.network(photoUrl, width: 100, height: 100);
+    }
+  }
+
+  Widget _buildTipoServicioDropdown() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: FormField<String>(builder: (FormFieldState<String> state) {
+        return InputDecorator(
+          decoration: InputDecoration(
+            labelText: 'Tipo de Servicio',
+            hintText: 'Seleccione el tipo de servicio',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              value: selectedTipoServicio,
+              isDense: true,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedTipoServicio = newValue!;
+                });
+              },
+              items: <String>['carga', 'mudanza', 'transporte']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(value),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      }),
+    );
+  }
+
+  Widget _buildQuantityInput() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        keyboardType: TextInputType.number,
+        initialValue: selectedQuantity.toString(),
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.digitsOnly
+        ],
+        decoration: InputDecoration(
+          labelText: (selectedTipoServicio == 'transporte')
+              ? 'Cantidad de pasajeros'
+              : 'Peso de la carga',
+          hintText: (selectedTipoServicio == 'transporte')
+              ? 'Cantidad de pasajeros'
+              : 'Peso de la carga',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        onChanged: (value) {
+          setState(() {
+            selectedQuantity = int.parse(value);
+          });
+        },
+      ),
+    );
+  }
+
+  Widget _buildDocumentacionDropdown() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: FormField<String>(builder: (FormFieldState<String> state) {
+        return InputDecorator(
+          decoration: InputDecoration(
+            labelText: 'Documentación completa',
+            hintText: 'Seleccione si desea documentación completa',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              value: selectedDocumentacion,
+              isDense: true,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedDocumentacion = newValue!;
+                });
+              },
+              items: <String>['si', 'no']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(value),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      }),
+    );
+  }
+}
+
+Widget _buildSearchButton() {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.all(16.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            backgroundColor: Color.fromRGBO(15, 21, 163, 1)),
+        child: Text('Buscar')),
+  );
 }

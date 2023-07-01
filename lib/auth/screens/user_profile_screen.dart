@@ -5,7 +5,6 @@ import 'package:fastporte_app/globals.dart' as globals;
 import 'package:fastporte_app/widgets/profile_widget.dart';
 import 'package:fastporte_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -51,7 +50,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 child: Scaffold(
                   appBar: AppBar(
                     centerTitle: true,
-                    title: Text('FastPorte'),
+                    title: Text('Mi Perfil'),
                     leading: IconButton(
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () {
@@ -136,81 +135,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      if (globals.role == 'transportista')
-                        Column(
-                          children: [
-                            Center(
-                              child: Text(
-                                'Experiencia',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 30),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Trabajo',
-                                ),
-                                initialValue:
-                                    'Conductor de Turismo en "Turismo Perú"',
-                                readOnly: true,
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 30),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Tiempo',
-                                ),
-                                initialValue: '10 años',
-                                readOnly: true,
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Center(
-                              child: Text(
-                                'Acerca del vehículo',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            buildCardsVehicle(),
-                            const SizedBox(height: 20),
-                          ],
-                        ),
-                    ],
-                  ),
-                  floatingActionButtonLocation:
-                      FloatingActionButtonLocation.endFloat,
-                  floatingActionButton: SpeedDial(
-                    visible: activeRole,
-                    animatedIcon: AnimatedIcons.menu_close,
-                    overlayColor: Colors.black,
-                    overlayOpacity: 0.4,
-                    spaceBetweenChildren: 12,
-                    children: [
-                      SpeedDialChild(
-                          child: Icon(Icons.fire_truck_sharp),
-                          backgroundColor: Color.fromRGBO(26, 204, 141, 1),
-                          label: 'Editar Vehículo'),
-                      SpeedDialChild(
-                          child: Icon(Icons.star),
-                          backgroundColor: Color.fromRGBO(26, 204, 141, 1),
-                          label: 'Experiencia')
                     ],
                   ),
                 ),
