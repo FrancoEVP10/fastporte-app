@@ -36,9 +36,9 @@ class Comment {
     String toJson() => json.encode(toMap());
 
     factory Comment.fromMap(Map<String, dynamic> json) => Comment(
-        client: json["client"],
+        client: User.fromMap(json["client"]),
         comment: json["comment"],
-        driver: json["driver"],
+        driver: User.fromMap(json["driver"]),
         id: json["id"],
         star: json["star"],
     );

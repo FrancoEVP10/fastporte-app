@@ -12,7 +12,27 @@ class CommentsService extends ChangeNotifier {
   bool isSaving = false;
   final storage = FlutterSecureStorage();
 
-  Future<List<dynamic>> getCommentsByDriverId(String driverId) async {
+
+    Future<Comment> createComment(Comment comment) async {
+    final url = Uri.http(_baseUrlBack, '/api/comments/add/${comment.client.id}/${comment.driver.id}');
+    //final url = Uri.https(_baseUrlBack, '/api/clients');
+    final body = comment.toJson();
+    final token = await storage.read(key: 'token');
+    final resp = await http.post(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'content-type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+    // ignore: unused_local_variable
+    final decodedData = json.decode(resp.body);
+
+    return comment;
+  }
+
+  Future<List<Comment>> getCommentsByDriverId(String driverId) async {
     final Uri url = Uri.http(_baseUrlBack, '/api/comments/driver/$driverId');
     final token = await storage.read(key: 'token');
 
@@ -31,34 +51,48 @@ class CommentsService extends ChangeNotifier {
       //print(contracts);
       return comments;
     } else {
-      throw Exception('Error al obtener los comentarios ${resp.statusCode}');
+      return [];
     }
 
   }
 
-
-  static List<dynamic> convertList<T>(List<dynamic> json) {
-    List<dynamic> objects = [];
+  static List<Comment> convertList<T>(List<dynamic> json) {
+    List<Comment> objects = [];
     for (var item in json) {
-      //print(_fromJson(item));
-      objects.add(_fromJson(item));
+      objects.add(Comment.fromMap(item));
     }
-    //print(objects);
     return objects;
   }
 
-  static dynamic _fromJson(dynamic item) {
-    //print(item.runtimeType);
-    String jsonString = json.encode(item);
-    dynamic object = json.decode(jsonString);
-    //print(object);
-    return object;
+    Future<List<dynamic>> getAllComments() async {
+    final Uri url = Uri.http(_baseUrlBack, '/api/comments');
+    final token = await storage.read(key: 'token');
 
-    // Add more type conversions as needed
-    // else if (T == SomeOtherType) {
-    //   return SomeOtherType.fromJson(item) as T;
-    // }
+    final resp = await http.get(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
 
-    //throw Exception('Type conversion not implemented for type $T');
+    if (resp.statusCode == 200) {
+      final vehicleJson = jsonDecode(utf8.decode(resp.bodyBytes));
+      //print(userJson);
+      final vehicles = convertList(vehicleJson);
+      //print(contracts);
+      return vehicles;
+    } else {
+      throw Exception('Error al obtener comentarios ${resp.statusCode}');
+    }
   }
+
+  Future<int> getSize() async {
+    final list = getAllComments();
+
+    return list.then((lista){
+      return lista.length;
+    });
+  }
+
 }
