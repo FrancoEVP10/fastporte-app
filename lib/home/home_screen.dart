@@ -85,7 +85,7 @@ class HomeScreen extends StatelessWidget {
                               physics: NeverScrollableScrollPhysics(),
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
-                              itemCount: 2,
+                              itemCount: snapshot.data.length,
                               itemBuilder: (context, index) {
                                 return Column(
                                   children: [

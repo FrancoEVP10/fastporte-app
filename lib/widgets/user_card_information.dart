@@ -53,11 +53,11 @@ class UserCardInformation extends StatelessWidget {
                     children: [
                       Text(
                         "${vehicle.driver.name} ${vehicle.driver.lastname}",
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 14),
                       ),
                       Text(
                         vehicle.brand,
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 14),
                       ),
                       RatingBarIndicator(
                         rating: 3.0,

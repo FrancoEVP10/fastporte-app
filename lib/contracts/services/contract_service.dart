@@ -7,8 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 class ContractService extends ChangeNotifier {
-  // static String _baseUrlBack = 'localhost:8080';
-  final String _baseUrlBack = 'localhost:8080';
+  // static String _baseUrlBack = 'fastporte-backend.azurewebsites.net';
+  final String _baseUrlBack = 'fastporte-backend.azurewebsites.net';
   // final String _baseUrlBack = '192.168.0.112:8080'; // no me lo borren xd
   late Contract contract;
 
@@ -16,7 +16,7 @@ class ContractService extends ChangeNotifier {
   final storage = FlutterSecureStorage();
 
   Future<dynamic> createContract(clientId, driverId, body) async {
-    final Uri url = Uri.http(_baseUrlBack, '/api/contracts/add/$clientId/$driverId');
+    final Uri url = Uri.https(_baseUrlBack, '/api/contracts/add/$clientId/$driverId');
 
     final token = await storage.read(key: 'token');
 
@@ -67,7 +67,7 @@ class ContractService extends ChangeNotifier {
   }
 
   Future<List<dynamic>> getContracts() async {
-    final Uri url = Uri.http(_baseUrlBack, '/api/contracts');
+    final Uri url = Uri.https(_baseUrlBack, '/api/contracts');
 
     final token = await storage.read(key: 'token');
     //const token =
@@ -96,7 +96,7 @@ class ContractService extends ChangeNotifier {
     String userId = globals.localId;
     String clientRole = globals.role == 'transportista' ? 'driver' : 'client';
     final Uri url =
-        Uri.http(_baseUrlBack, '/api/contracts/pending/$clientRole/$userId');
+        Uri.https(_baseUrlBack, '/api/contracts/pending/$clientRole/$userId');
     final token = await storage.read(key: 'token');
 
     final response = await http.get(
@@ -123,7 +123,7 @@ class ContractService extends ChangeNotifier {
     String clientRole = globals.role == 'transportista' ? 'driver' : 'client';
 
     final Uri url =
-        Uri.http(_baseUrlBack, '/api/contracts/offer/$clientRole/$userId');
+        Uri.https(_baseUrlBack, '/api/contracts/offer/$clientRole/$userId');
     final token = await storage.read(key: 'token');
 
     final response = await http.get(
@@ -139,7 +139,7 @@ class ContractService extends ChangeNotifier {
       final contracts = convertList(contractsJson);
       return contracts;
     } else {
-      throw Exception('Error al obtener el usuario ${response.statusCode}');
+      return [];
     }
   }
 
@@ -148,7 +148,7 @@ class ContractService extends ChangeNotifier {
     String clientRole = globals.role == 'transportista' ? 'driver' : 'client';
 
     final Uri url =
-        Uri.http(_baseUrlBack, '/api/contracts/history/$clientRole/$userId');
+        Uri.https(_baseUrlBack, '/api/contracts/history/$clientRole/$userId');
     final token = await storage.read(key: 'token');
 
     final response = await http.get(
@@ -164,13 +164,13 @@ class ContractService extends ChangeNotifier {
       final contracts = convertList(contractsJson);
       return contracts;
     } else {
-      throw Exception('Error al obtener el usuario ${response.statusCode}');
+      return [];
     }
   }
 
   Future<Contract> updateContractVisible(int contractId) async {
     final Uri url =
-        Uri.http(_baseUrlBack, '/api/contracts/$contractId/change-visible');
+        Uri.https(_baseUrlBack, '/api/contracts/$contractId/change-visible');
     final token = await storage.read(key: 'token');
 
     final response = await http.put(url, headers: {
@@ -191,7 +191,7 @@ class ContractService extends ChangeNotifier {
     String userId = globals.localId;
     final Uri url;
 
-    url = Uri.http(_baseUrlBack,
+    url = Uri.https(_baseUrlBack,
         '/api/contracts/$contractId/change-status-offer-to-pending/driver=$userId');
 
     final token = await storage.read(key: 'token');
@@ -208,7 +208,7 @@ class ContractService extends ChangeNotifier {
   Future declineOfferDriver(contractId) async {
     final Uri url;
 
-    url = Uri.http(_baseUrlBack, '/api/contracts/$contractId/change-visible');
+    url = Uri.https(_baseUrlBack, '/api/contracts/$contractId/change-visible');
 
     final token = await storage.read(key: 'token');
 
@@ -225,9 +225,9 @@ class ContractService extends ChangeNotifier {
   Future<Contract> updateUser(User user) async {
     final Uri url;
     if (globals.role == 'transportista') {
-      url = Uri.http(_baseUrlBack, '/api/contracts/${user.id}');
+      url = Uri.https(_baseUrlBack, '/api/contracts/${user.id}');
     } else {
-      url = Uri.http(_baseUrlBack, '/api/contracts/${user.id}');
+      url = Uri.https(_baseUrlBack, '/api/contracts/${user.id}');
     }
     final token = await storage.read(key: 'token');
     final resp = await http.put(
@@ -277,7 +277,7 @@ class ContractService extends ChangeNotifier {
 
   Future<String> getPDF(clientNombre, descripcion, destino, driver,
       fechaContrato, horaFin, horaInicio, inicio, precio) async {
-    final Uri url = Uri.http(
+    final Uri url = Uri.https(
         "https://lifetravel-backend.azurewebsites.net/api/microservicee/report");
 
     final response = await http.post(url, body: {

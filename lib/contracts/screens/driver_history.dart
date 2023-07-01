@@ -80,9 +80,8 @@ class _HistoryScreenState extends State<HistoryScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text("Contracts"),
-        bottom: TabBar(
+        flexibleSpace: TabBar(
+          indicatorColor: Color.fromRGBO(26, 204, 141, 1),
           controller: _tabController,
           isScrollable: false,
           tabs: [
@@ -125,7 +124,7 @@ class _HistoryScreenState extends State<HistoryScreen>
         itemBuilder: (BuildContext context, int index) {
           final item = apiData[index];
           return Container(
-            height: 200,
+            height: 220,
             margin: EdgeInsets.all(10),
             child: Container(
               decoration: BoxDecoration(
@@ -241,7 +240,7 @@ class _HistoryScreenState extends State<HistoryScreen>
         itemBuilder: (BuildContext context, int index) {
           final item = apiData[index];
           return Container(
-            height: 200,
+            height: 220,
             margin: EdgeInsets.all(10),
             child: Container(
               decoration: BoxDecoration(
@@ -345,7 +344,7 @@ class _HistoryScreenState extends State<HistoryScreen>
         itemBuilder: (BuildContext context, int index) {
           final item = apiData[index];
           return Container(
-            height: 200,
+            height: 220,
             margin: EdgeInsets.all(10),
             child: Container(
               decoration: BoxDecoration(
