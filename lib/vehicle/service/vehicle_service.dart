@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 class VehicleService extends ChangeNotifier {
   final String _baseUrlBack = 'localhost:8080';
+  // final String _baseUrlBack = '192.168.0.112:8080'; // no me lo borren xd
   bool isSaving = false;
   final storage = FlutterSecureStorage();
 
@@ -28,6 +29,28 @@ class VehicleService extends ChangeNotifier {
       return user;
     } else {
       throw Exception('Error al obtener el usuario ${resp.statusCode}');
+    }
+  }
+
+  Future<List<Vehicle>> getVehicleByCategoryAndQuantity(String category, int quantity) async {
+    final Uri url = Uri.http(_baseUrlBack, '/api/vehicle/find/$category/$quantity');
+    final token = await storage.read(key: 'token');
+
+    final resp = await http.get(
+      url,
+      headers: {
+        'content-type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (resp.statusCode == 200) {
+      final carsJson = jsonDecode(utf8.decode(resp.bodyBytes));
+      // cars json to cars list
+      final cars = convertList(carsJson);
+      return cars;
+    } else {
+      return [];
     }
   }
 

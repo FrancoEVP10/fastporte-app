@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
         'history': (_) => HistoryScreen(),
         'usercontracts': (_) => UserContractsScreen(),
         'vehicleandexperience': (_) => VehicleAndExperienceScreen(),
+        'create-contract': (_) => CreateContractScreen(),
       },
       scaffoldMessengerKey: NotificationsService.messengerKey,
       theme: ThemeData.light().copyWith(
